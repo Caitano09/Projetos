@@ -1,4 +1,4 @@
-Algoritmo "principal"
+Algoritmo "Estoque Bebidas"
 
 tipo
    Drink = registro
@@ -32,11 +32,11 @@ Inicio
       Escreval ("1. Cadastrar Bebida")
       escreval ("2. Vender Bebida")
       escreval ("3. Comprar Bebida")
-      escreval ("4. Emitir relatÛrio de estoque")
+      escreval ("4. Emitir relat√≥rio de estoque")
       escreval ("5. Sair")
 
       escreval
-      escreva ("DÌgite o n˙mero da opÁ„o correspondente: ")
+      escreva ("D√≠gite o n√∫mero da op√ß√£o correspondente: ")
       leia (menu)
       limpatela
 
@@ -55,18 +55,18 @@ Inicio
 
             enquanto (bebida[cont].nome = "") faca
                Escreval ()
-               Escreval ("Nome da Bebida inv·lido.")
+               Escreval ("Nome da Bebida inv√°lido.")
                Escreva ("Digite novamente: ")
                leia (bebida[cont].nome)
                escreval ()
             fimenquanto
 
-            escreva ("PreÁo Unit·rio [Reais]: ")
+            escreva ("Pre√ßo Unit√°rio [Reais]: ")
             leia(bebida[cont].preco)
 
             enquanto (bebida[cont].preco = 0) faca
                Escreval ()
-               Escreval ("PreÁo inv·lido.")
+               Escreval ("Pre√ßo inv√°lido.")
                Escreva ("Digite novamente: ")
                leia (bebida[cont].preco)
                escreval ()
@@ -77,7 +77,7 @@ Inicio
 
             enquanto (bebida[cont].quant = 0) faca
                Escreval ()
-               Escreval ("Quantidade inv·lida.")
+               Escreval ("Quantidade inv√°lida.")
                Escreva ("Digite novamente: ")
                leia (bebida[cont].quant)
                Escreval ()
@@ -90,7 +90,7 @@ Inicio
             repita
 
                se (resp <> "n" ) e (resp <> "s") entao
-                  escreva ("OpÁ„o incorreta, DÌgite novamente (s/n)?: ")
+                  escreva ("Op√ß√£o incorreta, D√≠gite novamente (s/n)?: ")
                   leia (resp)
                fimse
 
@@ -118,24 +118,24 @@ Inicio
             repita
                Escreval ("                               VENDA                             ")
                Escreval ()
-               escreval ("1. Para encontrar a bebida por meio de cÛdigo.")
+               escreval ("1. Para encontrar a bebida por meio de c√≥digo.")
                escreval ("2. Para voltar ao menu.")
                escreval
-               escreva ("Digite sua opÁ„o: ")
+               escreva ("Digite sua op√ß√£o: ")
                leia (venda)
                limpatela
                escolha (venda)
 
                caso 1
                   repita
-                     Escreval("Nome - CÛdigo")
+                     Escreval("Nome - C√≥digo")
                      para i de 1 ate cont faca
 
                         Escreval(bebida[i].nome," -   ",bebida[i].codigo)
 
                      fimpara
                      Escreval ()
-                     escreva ("CÛdigo da bebida: ")
+                     escreva ("C√≥digo da bebida: ")
                      leia (codigo)
 
                      existeCodigo <- falso
@@ -147,12 +147,12 @@ Inicio
 
                      se (nao existeCodigo) entao
                         escreval
-                        escreval ("CÛdigo Inv·lido")
+                        escreval ("C√≥digo Inv√°lido")
                         escreval
                      senao
                         escreval
                         escreval ("Nome: ", bebida[codigo].nome)
-                        escreval ("PreÁo: R$", bebida[codigo].preco:5:2)
+                        escreval ("Pre√ßo: R$", bebida[codigo].preco:5:2)
                         escreval ("Quantidade: ", bebida[codigo].quant)
                         escreval
                         escreva ("Quantidade de ", bebida[codigo].nome, " vendida: ")
@@ -178,7 +178,7 @@ Inicio
                         leia (resp)
 
                         enquanto (resp <> "s") e (resp <> "n") faca
-                           escreva ("OpÁ„o incorreta, DÌgite novamente (s/n)?: ")
+                           escreva ("Op√ß√£o incorreta, D√≠gite novamente (s/n)?: ")
                            leia (resp)
                         fimenquanto
                      fimse
@@ -208,14 +208,14 @@ Inicio
                   resp <- ""
 
                outrocaso
-                  escreval ("CÛdigo inv·lido.")
+                  escreval ("C√≥digo inv√°lido.")
                   escreval
                fimescolha
 
             ate (resp = "")
 
          senao
-            escreval ("N„o h· bebida cadastrada.")
+            escreval ("N√£o h√° bebida cadastrada.")
             escreval
          fimse
 
@@ -227,10 +227,10 @@ Inicio
             repita
                Escreval ("                               COMPRA                             ")
                Escreval ()
-               escreval ("1. Para encontrar a bebida por meio de cÛdigo.")
+               escreval ("1. Para encontrar a bebida por meio de c√≥digo.")
                escreval ("2. Para voltar ao menu.")
                escreval
-               escreva ("Digite sua opÁ„o: ")
+               escreva ("Digite sua op√ß√£o: ")
                leia (compra)
                limpatela
 
@@ -238,14 +238,14 @@ Inicio
 
                caso 1
                   repita
-                     Escreval("Nome - CÛdigo")
+                     Escreval("Nome - C√≥digo")
                      para i de 1 ate cont faca
 
                         Escreval(bebida[i].nome," -   ",bebida[i].codigo)
 
                      fimpara
                      Escreval ()
-                     escreva ("CÛdigo da bebida: ")
+                     escreva ("C√≥digo da bebida: ")
                      leia (codigo)
 
                      existeCodigo <- falso
@@ -257,12 +257,12 @@ Inicio
 
                      se (nao existeCodigo) entao
                         escreval
-                        escreval ("CÛdigo Inv·lido")
+                        escreval ("C√≥digo Inv√°lido")
                         escreval
                      senao
                         escreval
                         escreval ("Nome: ", bebida[codigo].nome)
-                        escreval ("PreÁo: R$", bebida[codigo].preco:5:2)
+                        escreval ("Pre√ßo: R$", bebida[codigo].preco:5:2)
                         escreval ("Quantidade: ", bebida[codigo].quant)
                         escreval
                         Escreva ("Quantidade de ", bebida[codigo].nome," comprada: ")
@@ -271,7 +271,7 @@ Inicio
                         Se (quantcompra > 0) entao
                            bebida[codigo].quant <- bebida[codigo].quant + quantcompra)
                         senao
-                           Escreva ("Valor inv·lido.")
+                           Escreva ("Valor inv√°lido.")
                         fimse
                      fimse
 
@@ -280,7 +280,7 @@ Inicio
                      leia (resp)
 
                      enquanto (resp <> "s") e (resp <> "n") faca
-                        escreva ("OpÁ„o incorreta, DÌgite novamente (s/n)?: ")
+                        escreva ("Op√ß√£o incorreta, D√≠gite novamente (s/n)?: ")
                         leia (resp)
                      fimenquanto
 
@@ -291,7 +291,7 @@ Inicio
                   resp <- "n"
 
                outrocaso
-                  escreval ("CÛdigo inv·lido.")
+                  escreval ("C√≥digo inv√°lido.")
                   escreval
                fimescolha
 
@@ -299,7 +299,7 @@ Inicio
             ate (resp = "n")
 
          senao
-            escreval ("N„o h· bebida cadastrada.")
+            escreval ("N√£o h√° bebida cadastrada.")
             escreval
          fimse
 
@@ -313,7 +313,7 @@ Inicio
             para i de 1 ate cont faca
 
                Escreval ("Nome: ",bebida[i].nome)
-               Escreval ("PreÁo: R$",bebida[i].preco:5:2)
+               Escreval ("Pre√ßo: R$",bebida[i].preco:5:2)
                Escreval ("Quantidade: ",bebida[i].quant)
                Escreval ("=======================")
                valortotal <- valortotal + bebida[i].preco * bebida[i].quant
@@ -330,7 +330,7 @@ Inicio
             fimenquanto
 
          senao
-            escreval ("N„o h· bebida cadastrada.")
+            escreval ("N√£o h√° bebida cadastrada.")
             escreval
          fimse
 
@@ -339,7 +339,7 @@ Inicio
          menu <- 5
 
       outrocaso
-         escreval ("OpÁ„o Invalida.")
+         escreval ("Op√ß√£o Invalida.")
          escreval
 
       fimescolha
