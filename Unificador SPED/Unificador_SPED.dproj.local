@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2019/09/01 12:05:36.000.470,=C:\Users\Desenvolvimento01\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/09/03 11:39:18.000.725,=C:\Users\Desenvolvimento01\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/09/16 11:11:45.000.589,=C:\Users\Desenvolvimento01\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/12/19 10:09:45.000.908,=C:\Users\Desenvolvimento01\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2019/12/20 10:00:18.922,=C:\Users\Desenvolvimento01\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2019/12/20 10:02:04.047,D:\Unificador_SPED - v0.0\forms\Unit2.dfm=C:\Users\Desenvolvimento01\Documents\Embarcadero\Studio\Projects\Unit2.dfm</Transaction>
+    <Transaction>2019/12/20 10:02:04.047,D:\Unificador_SPED - v0.0\forms\Unit2.pas=C:\Users\Desenvolvimento01\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2019/12/20 10:02:27.530,D:\Unificador_SPED - v0.0\Unificador_SPED.dproj=C:\Users\Desenvolvimento01\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2019/12/20 10:02:49.885,=D:\Unificador_SPED - v0.0\forms\UPrincipal.pas</Transaction>
+    <Transaction>2019/12/20 10:02:57.160,D:\Unificador_SPED - v0.0\forms\Unit2.pas=</Transaction>
+    <Transaction>2019/12/20 10:04:32.380,=D:\Unificador_SPED - v0.0\Unit1.pas</Transaction>
+    <Transaction>2019/12/20 10:05:20.446,D:\Unificador_SPED - v0.0\forms\uFrmPrincipal.dfm=D:\Unificador_SPED - v0.0\forms\UPrincipal.dfm</Transaction>
+    <Transaction>2019/12/20 10:05:20.446,D:\Unificador_SPED - v0.0\forms\uFrmPrincipal.pas=D:\Unificador_SPED - v0.0\forms\UPrincipal.pas</Transaction>
+  </Transactions>
+</BorlandProject>
