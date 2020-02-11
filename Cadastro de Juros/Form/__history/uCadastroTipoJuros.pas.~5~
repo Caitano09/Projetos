@@ -1,0 +1,169 @@
+unit uCadastroTipoJuros;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls,
+  System.ImageList, Vcl.ImgList, PngImageList, Vcl.ToolWin, Vcl.ExtCtrls,
+  TipoJuros, TipoJurosRN;
+
+type
+  TfrmCadastroTipoJuros = class(TForm)
+    Panel1: TPanel;
+    ToolBar1: TToolBar;
+    PngImageList1: TPngImageList;
+    btnVoltar: TToolButton;
+    btnNovo: TToolButton;
+    btnEditar: TToolButton;
+    btnExcluir: TToolButton;
+    btnGravar: TToolButton;
+    btnCancelar: TToolButton;
+    btnPesquisar: TToolButton;
+    lblDescricao: TLabel;
+    edtDescricao: TEdit;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnVoltarClick(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnEditarClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
+
+  private
+    { Private declarations }
+     procedure botoesAtivados();
+  public
+    { Public declarations }
+    idTipoJuros: Integer;
+  end;
+
+var
+  frmCadastroTipoJuros: TfrmCadastroTipoJuros;
+  TipojurosRn : TTipoJurosRn;
+  tipoJuros  : TTipoJuros;
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCadastroTipoJuros.btnCancelarClick(Sender: TObject);
+begin
+  TipoJurosRn.botaoCancelar();
+  botoesAtivados();
+end;
+
+procedure TfrmCadastroTipoJuros.btnEditarClick(Sender: TObject);
+begin
+  edtDescricao.Enabled := true;
+
+  btnCancelar.Enabled := true;
+  btnGravar.Enabled := true;
+  btnExcluir.Enabled := false;
+  btnEditar.Enabled := false;
+  btnNovo.Enabled := false;
+  btnVoltar.Enabled := false;
+  btnPesquisar.Enabled := false;
+
+  edtDescricao.Clear;
+  edtDescricao.SetFocus;
+
+  TipojurosRn.botaoEditar();
+end;
+
+procedure TfrmCadastroTipoJuros.btnExcluirClick(Sender: TObject);
+begin
+  Tipojuros.setCodigo(idTipoJuros);
+  tipoJuros.setDescricao(edtDescricao.text);
+
+  TipojurosRn.botaoExcluir(Tipojuros);
+  botoesAtivados();
+end;
+
+procedure TfrmCadastroTipoJuros.btnGravarClick(Sender: TObject);
+begin
+  Tipojuros.setCodigo(idTipoJuros);
+  TipoJuros.setDescricao(edtDescricao.text);
+
+  TipojurosRn.botaoGravar(Tipojuros);
+  botoesAtivados();
+end;
+
+procedure TfrmCadastroTipoJuros.btnNovoClick(Sender: TObject);
+begin
+  edtDescricao.Enabled := true;
+
+  btnCancelar.Enabled := true;
+  btnGravar.Enabled := true;
+  btnVoltar.Enabled := false;
+  btnPesquisar.Enabled := false;
+  btnNovo.Enabled := false;
+  btnEditar.Enabled := false;
+  btnExcluir.Enabled := false;
+
+  edtDescricao.SetFocus;
+  TipojurosRn.botaoNovo();
+end;
+
+procedure TfrmCadastroTipoJuros.btnPesquisarClick(Sender: TObject);
+begin
+  if (TipojurosRn.botaoPesquisarCadastro() ) then
+  begin
+    btnVoltar.Enabled    := true;
+    btnNovo.Enabled      := true;
+    btnEditar.Enabled    := true;
+    btnExcluir.Enabled   := true;
+    btnGravar.Enabled    := false;
+    btnCancelar.Enabled  := false;
+    btnPesquisar.Enabled := true;
+  end;
+
+end;
+
+procedure TfrmCadastroTipoJuros.btnVoltarClick(Sender: TObject);
+begin
+  TipojurosRn.botaoVoltarCadastro;
+end;
+
+procedure TfrmCadastroTipoJuros.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  try
+    TipoJurosRn.Free;
+    TipoJuros.Free;
+  finally
+    Action := caFree;
+    frmCadastroTipoJuros := nil;
+  end;
+end;
+
+procedure TfrmCadastroTipoJuros.FormCreate(Sender: TObject);
+begin
+  TipojurosRn := TTipoJurosRn.Create;
+  tipoJuros := TTipoJuros.Create;
+end;
+
+procedure TfrmCadastroTipoJuros.FormShow(Sender: TObject);
+begin
+  botoesAtivados();
+end;
+
+procedure TfrmCadastroTipoJuros.botoesAtivados;
+begin
+  edtDescricao.Enabled := false;
+
+  btnVoltar.Enabled := true;
+  btnNovo.Enabled := true;
+  btnPesquisar.Enabled := true;
+  btnCancelar.Enabled := false;
+  btnGravar.Enabled := false;
+  btnExcluir.Enabled := false;
+  btnEditar.Enabled := false;
+
+  edtDescricao.Clear;
+end;
+
+
+end.

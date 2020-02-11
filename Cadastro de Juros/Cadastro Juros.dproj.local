@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2019/10/22 09:23:11.000.197,=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/22 09:24:02.000.391,C:\Users\01\Desktop\Cadastro Juros\Unit1.pas=C:\Users\01\Desktop\Cadastro Juros\JurosDAO.pas</Transaction>
+    <Transaction>2019/10/22 09:24:49.000.897,C:\Users\01\Desktop\Cadastro Juros\JurosDAO.pas=C:\Users\01\Desktop\Cadastro Juros\Dao\JurosDAO.pas</Transaction>
+    <Transaction>2019/10/22 09:43:03.000.437,=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/22 09:43:37.000.178,C:\Users\01\Desktop\Cadastro Juros\Unit1.pas=C:\Users\01\Desktop\Cadastro Juros\Classe\Juros.pas</Transaction>
+    <Transaction>2019/10/22 10:34:04.000.454,=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/22 10:34:25.000.998,C:\Users\01\Desktop\Cadastro Juros\Unit1.pas=C:\Users\01\Desktop\Cadastro Juros\TipoJuros.pas</Transaction>
+    <Transaction>2019/10/22 10:34:40.000.321,C:\Users\01\Desktop\Cadastro Juros\TipoJuros.pas=C:\Users\01\Desktop\Cadastro Juros\Classe\TipoJuros.pas</Transaction>
+  </Transactions>
+</BorlandProject>

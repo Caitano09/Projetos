@@ -1,0 +1,374 @@
+unit uPesquisaJuros;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics,  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Mask, RxToolEdit, RxLookup, Vcl.ComCtrls, System.ImageList, Vcl.ImgList,
+  PngImageList, Vcl.ToolWin, RxCurrEdit, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  JurosRN, TipoJuros, Juros, ZAbstractConnection, ZConnection, ZDataset,
+  ZAbstractRODataset, ZAbstractDataset, RDprint, Vcl.Menus, Validar;
+
+type
+  TfrmPesquisaJuros = class(TForm)
+    ToolBar1: TToolBar;
+    PngImageList1: TPngImageList;
+    btnVoltar: TToolButton;
+    btnVisualizar: TToolButton;
+    btnPesquisar: TToolButton;
+    btnImprimir: TToolButton;
+    GroupBox1: TGroupBox;
+    Panel1: TPanel;
+    edtDe: TCurrencyEdit;
+    edtAte: TCurrencyEdit;
+    lblDe: TLabel;
+    lblAte: TLabel;
+    Panel2: TPanel;
+    lblRegistros: TLabel;
+    Bevel1: TBevel;
+    lblNumRegistros: TLabel;
+    dblTipoJuros: TRxDBLookupCombo;
+    dsPesquisa: TDataSource;
+    zqGet: TZQuery;
+    lblSelecionado: TLabel;
+    ppmImprimir: TPopupMenu;
+    ipodeProdutos1: TMenuItem;
+    RDprint: TRDprint;
+    RDprintExemplo: TRDprint;
+    DBGrid1: TDBGrid;
+    Shape1: TShape;
+    Shape2: TShape;
+    Shape3: TShape;
+    lblAtivo: TLabel;
+    lblInativo: TLabel;
+    lblBloqueado: TLabel;
+    procedure btnVoltarClick(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnVisualizarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure RDprintAfterPrint(Sender: TObject);
+    procedure RDprintBeforeNewPage(Sender: TObject; Pagina: Integer);
+    procedure RDprintNewPage(Sender: TObject; Pagina: Integer);
+    procedure ipodeProdutos1Click(Sender: TObject);
+    procedure DBGrid1TitleClick(Column: TColumn);
+
+  private
+    { Private declarations }
+    bAscendente: boolean;
+    iLinha, iLinhaContinua: integer;
+    procedure pesquisar;
+    procedure AfterScroll(DataSet: TDataSet);
+    procedure imprimir();
+    procedure newLinePage();
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPesquisaJuros: TfrmPesquisaJuros;
+  JurosRn : TJurosRN;
+  Juros : TJuros;
+  TipoJuros : TTipoJuros;
+  ValidarPesquisa: TValidar;
+
+implementation
+
+{$R *.dfm}
+
+uses uDMPrincipal, uCadastroJuros;
+
+procedure TfrmPesquisaJuros.AfterScroll(DataSet: TDataSet);
+begin
+  lblSelecionado.Caption := '';
+  if not zqGet.IsEmpty then
+     lblSelecionado.Caption :=
+     'Cod: '+zqGet.FieldByName('codigo').AsString+' | '+
+     'Juros: '+zqGet.FieldByName('juros').AsString+' | '+
+     'Mora: '+zqGet.FieldByName('jurosmora').AsString+' | '+
+     'Acres: '+zqGet.FieldByName('acrescimo').AsString+' | '+
+     'Atraso: '+zqGet.FieldByName('diaatraso').AsString;
+end;
+
+procedure TfrmPesquisaJuros.imprimir;
+var
+  sSQL: string;
+  iCount: integer;
+begin
+  sSQL := '';
+
+  if zqGet.RecordCount > 0 then
+  begin
+    RDprint.OpcoesPreview.Preview := true;
+    RDprint.MostrarProgresso      := true;
+
+    RDprint.abrir;
+
+    iLinha := 7;
+    iCount := 0;
+
+    zqGet.First;
+    while not zqGet.eof do
+    begin
+      newLinePage;
+
+      RDprint.Impc(iLinha, 01,
+      ValidarPesquisa.PreencherString(zqGet.FieldByName('codigo').AsInteger, ' ', 1, 'D')+
+      ValidarPesquisa.PreencherString(FormatFloat('###,###,##0.000%', zqGet.FieldByName('juros').AsFloat),' ',25, 'E')+
+      ValidarPesquisa.PreencherString(FormatFloat('###,###,##0.000%', zqGet.FieldByName('jurosmora').AsFloat), ' ', 23, 'E')+
+      ValidarPesquisa.PreencherString(FormatFloat('###,###,##0.000R$', zqGet.FieldByName('acrescimo').AsFloat), ' ', 33, 'E')+
+      ValidarPesquisa.PreencherString(zqGet.FieldByName('diaatraso').AsString, ' ', 27, 'E')+
+      ValidarPesquisa.PreencherString(zqGet.FieldByName('tipojuros').AsString, ' ', 38, 'E'), [comp20], 0);
+
+      inc(iCount);
+
+      zqGet.next;
+    end;
+
+    newLinePage;
+    RDprint.imp(iLinha,01,'--------------------------------------------------------------------------------',0);
+    newLinePage;
+    RDprint.Impc(iLinha,01,
+    ValidarPesquisa.PreencherString('REGISTRO('+IntToStr(iCount)+')', ' ', 23, 'D'), [comp20, negrito], 0);
+    newLinePage;
+    RDprint.imp(iLinha,01,'--------------------------------------------------------------------------------',0);
+
+    RDprint.fechar;
+  end;
+end;
+
+procedure TfrmPesquisaJuros.ipodeProdutos1Click(Sender: TObject);
+begin
+  imprimir;
+end;
+
+procedure TfrmPesquisaJuros.newLinePage;
+begin
+  Inc(iLinha);
+  if iLinha > 63 then
+     RDprint.NovaPagina;
+end;
+
+
+procedure TfrmPesquisaJuros.pesquisar;
+begin
+  try
+    tipoJuros.setDescricao(dblTipoJuros.text);
+    tipoJuros.setCodigo(StrToInt(dblTipoJuros.Value));
+
+    JurosRn.pesquisar(zqGet, edtde.Value, edtate.Value, tipojuros);
+
+    lblNumRegistros.Caption := '0';
+
+   if not zqGet.IsEmpty then
+     lblNumRegistros.Caption := IntToStr(zqGet.RecordCount);
+
+  except
+    on E: Exception do
+    begin
+      Application.MessageBox(PChar(E.Message), 'Atenção', MB_ICONINFORMATION + MB_OK);
+    end;
+  end;
+end;
+
+procedure TfrmPesquisaJuros.RDprintAfterPrint(Sender: TObject);
+begin
+  Keybd_Event(VK_Escape, 0, 0, 0);
+end;
+
+procedure TfrmPesquisaJuros.RDprintBeforeNewPage(Sender: TObject;
+  Pagina: Integer);
+begin
+  RDprint.imp (64,01,'--------------------------------------------------------------------------------');
+  RDprint.impf(65,01,'G10 Sistemas ', [NEGRITO]);
+  RDprint.impf(65,65,'Telefone (75) 3631-4327', [comp17]);
+end;
+
+
+procedure TfrmPesquisaJuros.RDprintNewPage(Sender: TObject; Pagina: Integer);
+begin
+  RDprint.imp (01,01,'--------------------------------------------------------------------------------',0);
+  RDprint.impc(02,01,'RELAÇÃO DE JUROS', [NEGRITO],  0);
+  RDprint.impf(02,64,'Data:'+DateToStr(Date())+'',[normal], 0);
+  RDprint.impf(03,01,'Página: ' + formatfloat('##',pagina) + ' de &page&',[normal], 0);
+  RDprint.imp(04,01,'--------------------------------------------------------------------------------',0);
+  RDprint.impc(05, 01,
+  ValidarPesquisa.PreencherString('CÓDIGO    ', ' ', 20, 'D')+
+  ValidarPesquisa.PreencherString('JUROS     ', ' ', 25, 'D')+
+  ValidarPesquisa.PreencherString('MORA      ', ' ', 30, 'D')+
+  ValidarPesquisa.PreencherString('ACRESCIMO ', ' ', 28, 'D')+
+  ValidarPesquisa.PreencherString('DIA ATRASO', ' ', 30, 'D')+
+  ValidarPesquisa.PreencherString('TIPOJUROS', ' ', 70, 'D'), [comp20], 0);
+  RDprint.imp(06,01,'--------------------------------------------------------------------------------', 0);
+
+  iLinha         := 7;
+  iLinhaContinua := 7;
+end;
+
+procedure TfrmPesquisaJuros.btnPesquisarClick(Sender: TObject);
+begin
+  pesquisar;
+end;
+
+procedure TfrmPesquisaJuros.btnVisualizarClick(Sender: TObject);
+var
+  Juros: TJuros;
+  TipoJuros: TTipoJuros;
+begin
+  if Assigned(frmCadastroJuros) then
+  begin
+    if not frmPesquisaJuros.zqGet.IsEmpty then
+    begin
+      TipoJuros := TTipoJuros.Create;
+      juros := TJuros.Create;
+
+      TipoJuros.setDescricao(zqGet.FieldByName('tipojuros').AsString);
+      TipoJuros.setCodigo(zqGet.FieldByName('CodTipoJuros').AsInteger);
+      juros.setTipoJuros(TipoJuros);
+      Juros.setAcrescimo(zqGet.FieldByName('acrescimo').AsFloat);
+      Juros.setJuros(zqGet.FieldByName('juros').AsFloat);
+      Juros.setCodigo(zqGet.FieldByName('Codigo').AsInteger);
+      Juros.setMora(zqGet.FieldByName('jurosmora').AsFloat);
+      Juros.setDiaAtraso(zqGet.FieldByName('diaatraso').AsInteger);
+      Juros.setStatusGrupo(zqGet.FieldByName('statusgrupoid').AsInteger);
+
+      frmCadastroJuros.setJuros(Juros);
+      close;
+    end;
+  end;
+end;
+
+procedure TfrmPesquisaJuros.btnVoltarClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmPesquisaJuros.DBGrid1DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  sTexto: string;
+  cValor: Currency;
+begin
+  with (Sender as TDBGrid).Canvas do
+  begin
+    sTexto := DBGrid1.DataSource.DataSet.FieldByName(Column.Field.FieldName).AsString;
+
+    if (Column.Field.FieldName = 'juros') or (Column.Field.FieldName = 'jurosmora') and (not zqGet.IsEmpty) then
+    begin
+      cValor := DBGrid1.DataSource.DataSet.FieldByName(column.Field.FieldName).AsCurrency;
+      sTexto := FormatFloat('###,###,##0.000%', cValor);
+    end;
+
+    if (Column.Field.FieldName = 'acrescimo') and (not zqGet.IsEmpty) then
+    begin
+      cValor := DBGrid1.DataSource.DataSet.FieldByName(Column.Field.FieldName).AsCurrency;
+      sTexto := FormatFloat('###,###,##0.00', cValor);
+    end;
+
+    {Zébra o GRID}
+    if State = [] then
+    begin
+      if DBGrid1.DataSource.DataSet.RecNo mod 2 = 1 then
+         DBGrid1.Canvas.Brush.Color := $00FFE2C6
+      else
+         DBGrid1.Canvas.Brush.Color := clWhite;
+    end;
+    DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+
+    Font.Color := clBlack;
+
+    if (gdSelected in State) or (gdFocused in State) then
+       TDBGrid(Sender).Canvas.Brush.Color := $0082FFFF;
+
+    DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+
+    FillRect(Rect);
+    if not (State=[]) then
+       DrawFocusRect(Rect);
+
+     if (Column.Field.FieldName = 'tipojuros') then
+         TextOut(Rect.Left+2, Rect.Top+1, sTexto)
+     else
+        TextOut(Rect.Right - (TextWidth(sTexto)+4), Rect.Top+1, sTexto);
+
+      if zqGet.FieldByName ('descricao').AsString = 'Ativo' then
+         begin
+            Font.Color:= clBlack;
+            FillRect(Rect);
+            DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+            end
+         else if (zqGet.FieldByName('descricao').AsString = 'Inativo') then
+         begin
+            DBGrid1.Canvas.Font.Color:= clRed;
+            DBGrid1.Canvas.FillRect(Rect);
+            DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+         end
+         else
+         begin
+            DBGrid1.Canvas.Font.Color:= clGray;
+            DBGrid1.Canvas.FillRect(Rect);
+            DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+         end;
+  end;
+end;
+
+procedure TfrmPesquisaJuros.DBGrid1TitleClick(Column: TColumn);
+begin
+  if bAscendente then
+  begin
+    zqGet.IndexFieldNames := Column.FieldName + ' ASC';
+    bAscendente := false;
+  end
+  else
+  begin
+    zqGet.IndexFieldNames := Column.FieldName + ' DESC';
+    bAscendente := true;
+  end;
+end;
+
+procedure TfrmPesquisaJuros.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  try
+    JurosRn.Free;
+    Juros.Free;
+    TipoJuros.Free;
+    ValidarPesquisa.Free;
+  finally
+    Action := caFree;
+    frmPesquisaJuros := nil;
+    //o frm recebe nulo no botão pesquisaCadastro
+  end;
+end;
+
+procedure TfrmPesquisaJuros.FormCreate(Sender: TObject);
+begin
+  jurosRn := TJurosRN.Create;
+  juros := TJuros.Create;
+  tipoJuros := TTipoJuros.Create;
+  ValidarPesquisa := TValidar.Create;
+
+  dblTipoJuros.LookupSource := JurosRn.getTipoJuros;
+  dblTipoJuros.LookupDisplay := 'descricao';
+  dblTipoJuros.LookupField := 'id';
+
+  DBGrid1.Columns[0].Width := 80;
+  DBGrid1.Columns[1].Width := 95;
+  DBGrid1.Columns[2].Width := 95;
+  DBGrid1.Columns[3].Width := 75;
+  DBGrid1.Columns[4].Width := 200;
+  DBGrid1.Columns[5].Width := 80;
+
+  zqGet.AfterScroll := AfterScroll;
+end;
+
+procedure TfrmPesquisaJuros.FormShow(Sender: TObject);
+begin
+  lblSelecionado.Caption := '';
+end;
+
+end.

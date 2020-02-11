@@ -1,0 +1,200 @@
+unit TipoJurosRN;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.StdCtrls, Vcl.Mask, RxToolEdit, RxCurrEdit, Vcl.ComCtrls, Vcl.ToolWin,
+  Vcl.ExtCtrls, System.ImageList,  Vcl.ImgList, PngImageList, RxLookup, DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, TipoJuros, TipoJurosDAO,
+  JurosDAO;
+
+type
+  TTipoJurosRn = class
+
+    private
+      TipoJurosDAO: TTipoJurosDao;
+      bNovo, bAtualizar, bVisualizar: boolean;
+
+    public
+      constructor Create;
+      destructor Destroy; override;
+      procedure botaoVoltarCadastro();
+      procedure botaoVoltarPesquisa();
+      procedure botaoNovo();
+      procedure botaoEditar();
+      procedure botaoExcluir(TipoJuros: TTipoJuros);
+      function botaoGravar(TipoJuros: TTipoJuros): string;
+      procedure botaoCancelar();
+      function botaoPesquisarCadastro(): Boolean;
+      procedure botaoVisualizar(zGet: TZquery);
+      procedure setTipoJuros(TipoJuros: TTipoJuros);
+      procedure Pesquisar(zGet: TZquery; TipoJuros: TTipoJuros);
+      function verificaExclusao(TipoJuros: TTipoJuros): boolean;
+      procedure excluir(TipoJuros: TTipoJuros);
+      procedure editar(TipoJuros: TTipoJuros);
+      procedure incluir(TipoJuros: TTipoJuros);
+
+  end;
+
+implementation
+
+uses uCadastroTipoJuros, uPesquisaTipoJuros, uCadastroJuros;
+
+
+constructor TTipoJurosRn.Create;
+begin
+  TipoJurosDAO := TTipoJurosDAO.Create;
+end;
+
+destructor TTipoJurosRn.Destroy;
+begin
+  TipoJurosDAO.Free;
+  inherited;
+end;
+
+procedure TTipoJurosRn.editar(TipoJuros: TTipoJuros);
+begin
+  TipoJurosDAO.editar(TipoJuros);
+end;
+
+procedure TTipoJurosRn.excluir(TipoJuros: TTipoJuros);
+begin
+  TipoJurosDAO.excluir(TipoJuros);
+end;
+
+procedure TTipoJurosRn.botaoVoltarCadastro;
+begin
+  frmCadastroTipoJuros.Close;
+end;
+
+procedure TTipoJurosRn.botaoVoltarPesquisa;
+begin
+  frmPesquisaTipoJuros.Close;
+end;
+
+procedure TTipoJurosRn.botaoNovo;
+begin
+    bNovo      := true;
+    bAtualizar := false;
+end;
+
+procedure TTipoJurosRn.botaoEditar;
+begin
+  bNovo      := false;
+  bAtualizar := true;
+end;
+
+procedure TTipoJurosRn.botaoExcluir(TipoJuros: TTipoJuros);
+begin
+  try
+    if TipoJurosDAO.verificaExclusao(TipoJuros) then
+    begin
+      ShowMessage('Item está sendo usado na tabela Juros');
+    end
+
+    else if Application.MessageBox(PChar('Deseja realmente excluir?'), 'Confirmação', MB_ICONQUESTION+MB_YESNO) = mrYes then
+    begin
+      TipoJurosDAO.excluir(TipoJuros);
+    end;
+  except
+    on E: Exception do
+    begin
+      Application.MessageBox(PChar(E.Message), 'Atenção', MB_ICONINFORMATION + MB_OK);
+    end;
+  end;
+end;
+
+function TTipoJurosRn.botaoGravar(TipoJuros: TTipoJuros): string;
+begin
+
+  try
+    if Tipojuros.getDescricao = '' then
+       raise exception.Create('O campo Descricão é Obrigatório!');
+
+    if bNovo then
+    begin
+      result := TipoJurosDAO.incluir(Tipojuros);
+
+      ShowMessage('Adicionado com Sucesso');
+      botaoVoltarCadastro;
+    end;
+
+    if bAtualizar then
+    begin
+      TipoJurosDAO.editar(Tipojuros);
+        ShowMessage('Atualizado com Sucesso');
+    end;
+
+  except
+    on E: Exception do
+    begin
+      Application.MessageBox(PChar(E.Message), 'Atenção', MB_ICONINFORMATION + MB_OK);
+    end;
+  end;
+end;
+
+procedure TTipoJurosRN.botaoCancelar;
+begin
+  bNovo      := false;
+  bAtualizar := false;
+end;
+
+function TTipoJurosRN.botaoPesquisarCadastro(): Boolean;
+begin
+  if frmPesquisaTipoJuros = nil then
+  begin
+    frmPesquisaTipoJuros := TfrmPesquisaTipoJuros.Create(frmPesquisaTipoJuros);
+    frmPesquisaTipoJuros.ShowModal;
+    bVisualizar := frmPesquisaTipoJuros.getVisualizar;
+  end;
+  frmPesquisaTipoJuros := nil;
+  Result := bVisualizar
+end;
+
+procedure TTipoJurosRN.Pesquisar(zGet: TZquery; TipoJuros: TTipoJuros);
+begin
+  TipoJurosDAO.pesquisar(zGet, TipoJuros);
+end;
+
+procedure TTipoJurosRn.botaoVisualizar(zGet: TZquery);
+var
+  TipoJuros: TTipoJuros;
+begin
+  if Assigned(frmCadastroTipoJuros) then
+  begin
+    if not frmPesquisaTipoJuros.zqGet.IsEmpty then
+    begin
+      TipoJuros := TTipoJuros.Create;
+
+      TipoJuros.setDescricao(zGet.FieldByName('descricao').AsString);
+      TipoJuros.setCodigo(zGet.FieldByName('Codigo').AsInteger);
+      setTipoJuros(TipoJuros);
+
+      botaoVoltarPesquisa();
+    end;
+  end;
+end;
+
+procedure TTipoJurosRN.setTipoJuros(TipoJuros: TTipoJuros);
+begin
+  with frmCadastroTipoJuros do
+  begin
+    idTipoJuros             := TipoJuros.getCodigo;
+    edtDescricao.Text  := TipoJuros.getDescricao;
+   end;
+
+end;
+
+function TTipoJurosRn.verificaExclusao(TipoJuros: TTipoJuros): boolean;
+begin
+  result := TipoJurosDAO.verificaExclusao(Tipojuros);
+end;
+
+procedure TTipoJurosRn.incluir(TipoJuros: TTipoJuros);
+begin
+  TipoJurosDAO.incluir(TipoJuros);
+end;
+
+end.

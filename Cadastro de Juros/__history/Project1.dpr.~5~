@@ -1,0 +1,19 @@
+program Project1;
+
+uses
+  Vcl.Forms,
+  uCadastroJuros in 'Form\uCadastroJuros.pas' {Form1},
+  JurosDAO in 'Dao\JurosDAO.pas',
+  Juros in 'Classe\Juros.pas',
+  TipoJuros in 'Classe\TipoJuros.pas',
+  uDMPrincipal in 'Form\uDMPrincipal.pas' {DataModule1: TDataModule};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TDataModule1, DataModule1);
+  Application.Run;
+end.

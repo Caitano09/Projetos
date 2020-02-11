@@ -1,0 +1,150 @@
+unit JurosRN;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.StdCtrls, Vcl.Mask, RxToolEdit, RxCurrEdit, Vcl.ComCtrls, Vcl.ToolWin,
+  Vcl.ExtCtrls, System.ImageList,  Vcl.ImgList, PngImageList, RxLookup, DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, JurosDAO, Juros, TipoJuros,
+  TipoJurosDAO;
+
+type
+  TJurosRN = class
+
+    private
+      JurosDAO: TJurosDao;
+      TipoJurosDAO: TTipoJurosDao;
+      bNovo, bAtualizar: boolean;
+
+    public
+      constructor Create;
+      destructor Destroy; override;
+      procedure botaoVoltarCadastro();
+      procedure botaoVoltarPesquisa();
+      procedure botaoNovo();
+      procedure botaoEditar();
+      procedure botaoExcluir(Juros: TJuros);
+      procedure botaoGravar(Juros: TJuros);
+      procedure botaoCancelar();
+      procedure botaoPesquisar();
+      function getTipoJuros(): TDataSource;
+      function getJuros(): TDataSource;
+
+  end;
+
+implementation
+
+uses uCadastroJuros, uPesquisaJuros;
+
+constructor TJurosRN.Create;
+begin
+  JurosDao := TJurosDao.Create;
+  TipoJurosDAO := TTipoJurosDAO.Create;
+end;
+
+destructor TJurosRN.Destroy;
+begin
+  JurosDao.Free;
+  TipoJurosDAO.Free;
+  inherited;
+end;
+
+function TJurosRN.getJuros: TDataSource;
+begin
+  Result
+end;
+
+function TJurosRN.getTipoJuros: TDataSource;
+begin
+  result := TipoJurosDAO.getTipoJuros();
+end;
+
+procedure TJurosRN.botaoCancelar;
+begin
+  bNovo      := false;
+  bAtualizar := false;
+end;
+
+procedure TJurosRN.botaoEditar;
+begin
+  bNovo      := false;
+  bAtualizar := true;
+end;
+
+procedure TJurosRN.botaoExcluir(Juros: TJuros);
+begin
+  try
+
+    if Application.MessageBox(PChar('Deseja realmente excluir?'), 'Confirmação', MB_ICONQUESTION+MB_YESNO) = mrYes then
+    begin
+      JurosDAO.excluir(Juros);
+    end;
+  except
+    on E: Exception do
+    begin
+      Application.MessageBox(PChar(E.Message), 'Atenção', MB_ICONINFORMATION + MB_OK);
+    end;
+  end;
+end;
+
+procedure TJurosRN.botaoGravar(Juros: TJuros);
+begin
+
+  try
+    if juros.getJuros = 0 then
+       raise exception.Create('O campo Juros é Obrigatório!');
+
+    if juros.getMora = 0 then
+       raise exception.Create('O campo Juros Mora é Obrigatório!');
+
+    if juros.getAcrescimo = 0 then
+       raise exception.Create('O campo Acrescimo é Obrigatório!');
+
+    if juros.getDiaAtraso = 0 then
+       raise exception.Create('O campo Dia Atraso é Obrigatório!');
+
+    if juros.getTipoJuros.getDescricao = '' then
+       raise exception.Create('O campo  é Obrigatório!');
+
+    if bNovo then
+       JurosDAO.incluir(juros);
+
+    if bAtualizar then
+       JurosDAO.editar(juros);
+
+  except
+    on E: Exception do
+    begin
+      Application.MessageBox(PChar(E.Message), 'Atenção', MB_ICONINFORMATION + MB_OK);
+    end;
+  end;
+end;
+
+procedure TJurosRN.botaoNovo;
+begin
+    bNovo      := true;
+    bAtualizar := false;
+end;
+
+procedure TJurosRN.botaoPesquisar();
+begin
+  if frmPesquisaJuros = nil then
+  begin
+    frmPesquisaJuros := TfrmPesquisaJuros.Create(frmPesquisaJuros);
+    frmPesquisaJuros.ShowModal;
+  end;
+end;
+
+procedure TJurosRN.botaoVoltarCadastro;
+begin
+  frmCadastroJuros.Close;
+end;
+
+procedure TJurosRN.botaoVoltarPesquisa;
+begin
+  frmPesquisaJuros.Close;
+end;
+
+end.

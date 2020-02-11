@@ -1,0 +1,191 @@
+unit uCadastroJuros;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.StdCtrls, Vcl.Mask, RxToolEdit, RxCurrEdit, Vcl.ComCtrls, Vcl.ToolWin,
+  Vcl.ExtCtrls, System.ImageList, Vcl.ImgList, PngImageList, RxLookup, DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, vcl.buttons, Juros, JurosRN,
+  TipoJuros;
+
+type
+  TfrmCadastroJuros = class(TForm)
+    PngImageList1: TPngImageList;
+    Panel1: TPanel;
+    ToolBar1: TToolBar;
+    btnVoltar: TToolButton;
+    btnNovo: TToolButton;
+    btnEditar: TToolButton;
+    btnExcluir: TToolButton;
+    btnGravar: TToolButton;
+    btnCancelar: TToolButton;
+    btnPesquisar: TToolButton;
+    edtAcrescimo: TCurrencyEdit;
+    edtMora: TCurrencyEdit;
+    edtJuros: TCurrencyEdit;
+    lblTipoJuros: TLabel;
+    lblDiaAtraso: TLabel;
+    lblJurosMora: TLabel;
+    lblJuros: TLabel;
+    lblAcrescimo: TLabel;
+    edtDiaAtraso: TEdit;
+    dblTipoJuros: TRxDBLookupCombo;
+    procedure btnVoltarClick(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnEditarClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+
+  private
+    { Private declarations }
+     procedure botoesAtivados();
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCadastroJuros: TfrmCadastroJuros;
+  jurosRn : TJurosRN;
+  juros : TJuros;
+  tipoJuros  : TTipoJuros;
+implementation
+
+{$R *.dfm}
+
+uses uDMPrincipal;
+
+procedure TfrmCadastroJuros.botoesAtivados;
+begin
+  edtAcrescimo.Enabled := false;
+  edtMora.Enabled := false;
+  edtJuros.Enabled := false;
+  edtDiaAtraso.Enabled := false;
+  dblTipoJuros.Enabled := false;
+
+  btnVoltar.Enabled := true;
+  btnNovo.Enabled := true;
+  btnPesquisar.Enabled := true;
+  btnCancelar.Enabled := false;
+  btnGravar.Enabled := false;
+  btnExcluir.Enabled := false;
+  btnEditar.Enabled := false;
+
+  edtAcrescimo.Clear;
+  edtMora.Clear;
+  edtJuros.Clear;
+  edtDiaAtraso.Clear;
+  //dblTipoJuros.;
+end;
+
+
+procedure TfrmCadastroJuros.btnCancelarClick(Sender: TObject);
+begin
+  jurosRn.botaoCancelar();
+  botoesAtivados();
+end;
+
+procedure TfrmCadastroJuros.btnEditarClick(Sender: TObject);
+begin
+  edtAcrescimo.Enabled := true;
+  edtMora.Enabled := true;
+  edtJuros.Enabled := true;
+  edtDiaAtraso.Enabled := true;
+  dblTipoJuros.Enabled := true;
+
+  btnCancelar.Enabled := true;
+  btnGravar.Enabled := true;
+  btnExcluir.Enabled := false;
+  btnEditar.Enabled := false;
+  btnNovo.Enabled := false;
+  btnVoltar.Enabled := false;
+  btnPesquisar.Enabled := false;
+
+  edtAcrescimo.Clear;
+  edtMora.Clear;
+  edtJuros.Clear;
+  edtDiaAtraso.Clear;
+  //dblTipoJuros.;
+  dblTipoJuros.SetFocus;
+
+  jurosRn.botaoEditar();
+end;
+
+procedure TfrmCadastroJuros.btnExcluirClick(Sender: TObject);
+begin
+
+  juros.setJuros(edtJuros.value);
+  juros.setMora(edtMora.value);
+  juros.setAcrescimo(edtAcrescimo.value);
+  juros.setDiaAtraso(StrToInt(edtDiaAtraso.Text));
+
+  tipoJuros.setDescricao(dblTipoJuros.text);
+  tipoJuros.setCodigo(StrToInt(dblTipoJuros.Value));
+  juros.setTipoJuros(tipoJuros);
+
+  jurosRn.botaoExcluir(juros);
+  botoesAtivados();
+end;
+
+procedure TfrmCadastroJuros.btnGravarClick(Sender: TObject);
+begin
+  juros.setJuros(edtJuros.value);
+  juros.setMora(edtMora.value);
+  juros.setAcrescimo(edtAcrescimo.value);
+  juros.setDiaAtraso(StrToInt(edtDiaAtraso.Text));
+
+  tipoJuros.setDescricao(dblTipoJuros.text);
+  tipoJuros.setCodigo(StrToInt(dblTipoJuros.Value));
+  juros.setTipoJuros(tipoJuros);
+
+  jurosRn.botaoGravar(juros);
+  botoesAtivados();
+end;
+
+procedure TfrmCadastroJuros.btnNovoClick(Sender: TObject);
+begin
+  edtAcrescimo.Enabled := true;
+  edtMora.Enabled := true;
+  edtJuros.Enabled := true;
+  edtDiaAtraso.Enabled := true;
+  dblTipoJuros.Enabled := true;
+
+  btnCancelar.Enabled := true;
+  btnGravar.Enabled := true;
+  btnVoltar.Enabled := false;
+  btnPesquisar.Enabled := false;
+  btnNovo.Enabled := false;
+  btnEditar.Enabled := false;
+  btnExcluir.Enabled := false;
+
+  dblTipoJuros.SetFocus;
+  jurosRn.botaoNovo();
+end;
+
+procedure TfrmCadastroJuros.btnPesquisarClick(Sender: TObject);
+begin
+  jurosRn.botaoPesquisarCadastro();
+end;
+
+procedure TfrmCadastroJuros.btnVoltarClick(Sender: TObject);
+begin
+  jurosRn.botaoVoltarCadastro();
+end;
+
+procedure TfrmCadastroJuros.FormShow(Sender: TObject);
+begin
+  botoesAtivados();
+  jurosRn := TJurosRN.Create;
+  juros := TJuros.Create;
+  tipoJuros := TTipoJuros.Create;
+
+  dblTipoJuros.LookupSource := JurosRN.getTipoJuros();
+  dblTipoJuros.LookupDisplay := 'descricao';
+  dblTipoJuros.LookupField := 'id';
+end;
+
+end.

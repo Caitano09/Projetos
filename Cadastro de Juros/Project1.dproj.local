@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2019/10/01 15:25:00.000.801,=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/10/02 15:10:36.000.596,=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/10/10 11:30:35.000.345,=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/10/11 08:45:48.000.247,=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/10/18 10:52:22.000.038,=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/10/22 09:13:07.000.478,=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/10/22 09:13:50.000.508,C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\01\Documents\Embarcadero\Studio\Projects\uCadastroJuros.dfm</Transaction>
+    <Transaction>2019/10/22 09:13:50.000.508,C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\01\Documents\Embarcadero\Studio\Projects\uCadastroJuros.pas</Transaction>
+    <Transaction>2019/10/22 09:15:08.000.933,C:\Users\01\Documents\Embarcadero\Studio\Projects\uCadastroJuros.dfm=C:\Users\01\Desktop\Cadastro Juros\Form\uCadastroJuros.dfm</Transaction>
+    <Transaction>2019/10/22 09:15:08.000.933,C:\Users\01\Documents\Embarcadero\Studio\Projects\uCadastroJuros.pas=C:\Users\01\Desktop\Cadastro Juros\Form\uCadastroJuros.pas</Transaction>
+    <Transaction>2019/10/22 09:15:21.000.054,C:\Users\01\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\01\Desktop\Cadastro Juros\Project1.dproj</Transaction>
+    <Transaction>2019/10/22 11:06:26.000.302,=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/22 11:07:15.000.921,=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/22 11:08:49.000.098,C:\Users\01\Desktop\Cadastro Juros\uDMPrincipal.pas=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/22 11:08:49.000.098,C:\Users\01\Desktop\Cadastro Juros\uDMPrincipal.dfm=C:\Users\01\Desktop\Cadastro Juros\Unit1.dfm</Transaction>
+    <Transaction>2019/10/22 11:09:05.000.590,C:\Users\01\Desktop\Cadastro Juros\Form\uDMPrincipal.pas=C:\Users\01\Desktop\Cadastro Juros\uDMPrincipal.pas</Transaction>
+    <Transaction>2019/10/22 11:09:05.000.590,C:\Users\01\Desktop\Cadastro Juros\Form\uDMPrincipal.dfm=C:\Users\01\Desktop\Cadastro Juros\uDMPrincipal.dfm</Transaction>
+    <Transaction>2019/10/22 15:05:28.000.943,=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/22 15:05:58.000.601,C:\Users\01\Desktop\Cadastro Juros\JurosRN.pas=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/22 15:06:33.000.608,C:\Users\01\Desktop\Cadastro Juros\Rn\JurosRN.pas=C:\Users\01\Desktop\Cadastro Juros\JurosRN.pas</Transaction>
+    <Transaction>2019/10/23 08:25:17.000.097,=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/23 08:26:58.000.714,C:\Users\01\Desktop\Cadastro Juros\Unit1.pas=C:\Users\01\Desktop\Cadastro Juros\TipoJurosDAO.pas</Transaction>
+    <Transaction>2019/10/23 08:28:02.000.146,C:\Users\01\Desktop\Cadastro Juros\TipoJurosDAO.pas=</Transaction>
+    <Transaction>2019/10/23 08:28:50.000.650,=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/23 08:29:25.000.660,C:\Users\01\Desktop\Cadastro Juros\Unit1.pas=C:\Users\01\Desktop\Cadastro Juros\Dao\TipoJurosDAO.pas</Transaction>
+    <Transaction>2019/10/23 14:55:34.000.048,=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/23 14:56:02.000.999,C:\Users\01\Desktop\Cadastro Juros\Form\uPesquisaJuros.pas=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/23 14:56:02.000.999,C:\Users\01\Desktop\Cadastro Juros\Form\uPesquisaJuros.dfm=C:\Users\01\Desktop\Cadastro Juros\Unit1.dfm</Transaction>
+    <Transaction>2019/10/27 09:53:07.000.943,=C:\Users\Daniel\Desktop\Cadastro Juros\Form\uPesquisaTipoJuros.pas</Transaction>
+    <Transaction>2019/10/27 09:53:07.000.845,=C:\Users\Daniel\Desktop\Cadastro Juros\Form\uCadastroTipoJuros.pas</Transaction>
+    <Transaction>2019/10/27 09:54:18.000.684,=C:\Users\Daniel\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/10/27 09:54:35.000.545,C:\Users\Daniel\Desktop\Cadastro Juros\Unit1.pas=C:\Users\Daniel\Desktop\Cadastro Juros\TipoJurosRN.pas</Transaction>
+    <Transaction>2019/10/27 09:54:51.000.078,C:\Users\Daniel\Desktop\Cadastro Juros\TipoJurosRN.pas=C:\Users\Daniel\Desktop\Cadastro Juros\Rn\TipoJurosRN.pas</Transaction>
+    <Transaction>2019/10/28 09:21:54.000.555,=C:\Users\01\Desktop\Arquivos\Branco\forms\uTipoProdutoPesquisar.pas</Transaction>
+    <Transaction>2019/10/28 09:24:16.000.970,C:\Users\01\Desktop\Arquivos\Branco\forms\uTipoProdutoPesquisar.pas=</Transaction>
+    <Transaction>2019/10/28 09:24:27.000.745,=C:\Users\01\Desktop\Cadastro Juros\Classe\Validar.pas</Transaction>
+    <Transaction>2019/11/01 10:03:16.000.114,=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/11/01 10:12:46.000.737,C:\Users\01\Desktop\Cadastro Juros\uPesquisarJurosStringGrid.dfm=C:\Users\01\Desktop\Cadastro Juros\Unit1.dfm</Transaction>
+    <Transaction>2019/11/01 10:12:46.000.737,C:\Users\01\Desktop\Cadastro Juros\uPesquisarJurosStringGrid.pas=C:\Users\01\Desktop\Cadastro Juros\Unit1.pas</Transaction>
+    <Transaction>2019/11/01 10:13:21.000.867,C:\Users\01\Desktop\Cadastro Juros\Form\uPesquisarJurosStringGrid.pas=C:\Users\01\Desktop\Cadastro Juros\uPesquisarJurosStringGrid.pas</Transaction>
+    <Transaction>2019/11/01 10:13:21.000.867,C:\Users\01\Desktop\Cadastro Juros\Form\uPesquisarJurosStringGrid.dfm=C:\Users\01\Desktop\Cadastro Juros\uPesquisarJurosStringGrid.dfm</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="Classe"/>
+    <File Path="Classe\Juros.pas"/>
+    <File Path="Classe\TipoJuros.pas"/>
+    <File Path="Classe\Validar.pas"/>
+    <File Path="Dao"/>
+    <File Path="Dao\JurosDAO.pas"/>
+    <File Path="Dao\TipoJurosDAO.pas"/>
+    <File Path="Form"/>
+    <File Path="Form\uCadastroJuros.pas"/>
+    <File Path="Form\uCadastroJuros.dfm"/>
+    <File Path="Form\uCadastroTipoJuros.pas"/>
+    <File Path="Form\uCadastroTipoJuros.dfm"/>
+    <File Path="Form\uDMPrincipal.pas"/>
+    <File Path="Form\uDMPrincipal.dfm"/>
+    <File Path="Form\uPesquisaJuros.pas"/>
+    <File Path="Form\uPesquisaJuros.dfm"/>
+    <File Path="Form\uPesquisarJurosStringGrid.pas"/>
+    <File Path="Form\uPesquisarJurosStringGrid.dfm"/>
+    <File Path="Form\uPesquisaTipoJuros.pas"/>
+    <File Path="Form\uPesquisaTipoJuros.dfm"/>
+    <File Path="Rn"/>
+    <File Path="Rn\JurosRN.pas"/>
+    <File Path="Rn\TipoJurosRN.pas"/>
+  </ProjectSortOrder>
+</BorlandProject>

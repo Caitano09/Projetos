@@ -1,0 +1,191 @@
+unit TipoJurosDAO;
+
+interface
+
+uses
+  TipoJuros, DB, ZAbstractRODataset, ZAbstractDataset,
+  ZDataset, SysUtils, ZConnection, uDMPrincipal;
+
+implementation
+
+type
+  TTipoJurosDao = class
+
+  private
+    zquery : TZQuery;
+    dataSource: TDataSource;
+
+  public
+    procedure editar(tipoJuros : TTipoJuros);
+    procedure excluir(tipoJuros: TTipoJuros);
+    procedure incluir(tipoJuros: TTipoJuros);
+    procedure pesquisar(tipoJuros: TTipoJuros; sOrderBy: String);
+
+    function getTipoJuros(): TDataSource;
+    function existeCadastro(TipoJuros: TTipoJuros): boolean;
+
+  end;
+
+{ TTipoJurosDao }
+
+
+
+{ TTipoJurosDao }
+
+procedure TTipoJurosDao.editar(tipoJuros: TTipoJuros);
+var
+  zSet: TZQuery;
+  sSQL: string;
+begin
+  try
+    zSet := TZQuery.Create(ZQuery);
+    zSet.Connection := dmPrincipal.ZConnection;
+
+    sSQL :=
+    'update tipojuros set '+
+    'descricao = '''+tipoJuros.getDescricao+''', '+
+    'where id  = '''+IntToStr(tipoJuros.getCodigo)+''' ';
+
+    zSet.Close;
+    zSet.SQL.Text := sSQL;
+    zSet.ExecSQL;
+  finally
+    zSet.Close;
+    zSet.Free;
+  end;
+end;
+
+procedure TTipoJurosDao.excluir(tipoJuros: TTipoJuros);
+var
+  zSet: TZQuery;
+  sSQL: string;
+begin
+  try
+    zSet := TZQuery.Create(ZQuery);
+    zSet.Connection := dmPrincipal.ZConnection;
+
+    sSQL := 'delete from tipojuros where id = '+IntToStr(tipoJuros.getCodigo);
+
+    zSet.Close;
+    zSet.SQL.Text := sSQL;
+    zSet.ExecSQL;
+  finally
+    zSet.Close;
+    zSet.Free;
+  end;
+end;
+
+procedure TTipoJurosDao.incluir(tipoJuros: TTipoJuros);
+var
+  zSet: TZQuery;
+  sSQL: string;
+
+begin
+  try
+    zSet := TZQuery.Create(ZQuery);
+    zSet.Connection := dmPrincipal.ZConnection;
+
+    dmPrincipal.ZConnection.StartTransaction;
+    try
+      sSQL :=
+      'insert into tipojuros (descricao) '+
+      'values ('''+tipoJuros.getDescricao+''' ';
+
+      zSet.Close;
+      zSet.SQL.Text := sSQL;
+      zSet.ExecSQL;
+
+      zSet.Close;
+      zSet.SQL.Clear;
+      zSet.SQL.Text := 'select currval(''tipojuros_id_seq'') as id';
+      zSet.Open;
+
+      dmPrincipal.ZConnection.Commit;
+    except
+      dmPrincipal.ZConnection.Rollback;
+    end;
+  finally
+    zSet.Close;
+    zSet.Free;
+  end;
+end;
+
+procedure TTipoJurosDao.pesquisar(tipoJuros: TTipoJuros; sOrderBy: String);
+var
+  zGet: TZQuery;
+  sSQL: string;
+begin
+  zGet := TZQuery.Create(ZQuery);
+  zGet.Connection := dmPrincipal.ZConnection;
+
+  sSQL := 'select * from tipojuros where id is not null ';
+
+  if tipoJuros.getDescricao <> '' then
+     sSQL := sSQL + 'and descricao = '''+tipoJuros.getDescricao+''' ';
+
+  sSQL := sSQL + 'order by ' + sOrderBy;
+
+  zGet.Close;
+  zGet.SQL.Clear;
+  zGet.SQL.Text := sSQL;
+  zGet.Open;
+end;
+
+function TTipoJurosDao.getTipoJuros(): TDataSource;
+var
+  sSQL: string;
+  ZGet: TZQuery;
+  DS: TDataSource;
+begin
+  try
+    ZGet := TZQuery.Create(ZQuery);
+    ZGet.Connection := dmPrincipal.ZConnection;
+    DS := TDataSource.Create(DataSource);
+
+    DS.DataSet := ZGet;
+
+    sSQL := 'select id, descricao from tipojuros ';
+
+    ZGet.SQL.Text := sSQL;
+    ZGet.Open;
+
+    result := DS;
+
+  except
+    ZGet.Close;
+    ZGet.Free;
+  end;
+end;
+
+function TTipoJurosDao.existeCadastro(TipoJuros: TTipoJuros): boolean;
+var
+  zGet: TZQuery;
+  sSQL: string;
+  bExiste: boolean;
+begin
+  try
+    zGet := TZQuery.Create(ZQuery);
+    zGet.Connection := dmPrincipal.ZConnection;
+
+    sSQL := 'select id from tipojuros where descricao = '''+TipoJuros.getDescricao+''' ';
+
+    if TipoJuros.getCodigo <> 0 then
+       sSQL := sSQL + 'and id <> '''+IntToStr(TipoJuros.getCodigo)+''' ';
+
+    zGet.Close;
+    zGet.SQL.Text := sSQL;
+    zGet.Open;
+
+    bExiste := false;
+    if not zGet.IsEmpty then
+       if not zGet.FieldByName('id').IsNull then
+          bExiste := true;
+
+  finally
+    result := bExiste;
+    zGet.Close;
+    zGet.Free;
+  end;
+end;
+
+end.

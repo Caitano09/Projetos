@@ -1,0 +1,269 @@
+unit JurosDAO;
+
+interface
+
+uses
+  Juros, DB, ZAbstractRODataset, ZAbstractDataset,
+  ZDataset, SysUtils, ZConnection, uDMPrincipal, TipoJuros, Validar;
+
+type
+  TJurosDao = class
+
+  private
+    zquery : TZQuery;
+    dataSource: TDataSource;
+    validar : Tvalidar;
+  public
+    procedure editar(juros : TJuros);
+    procedure excluir(juros: Tjuros);
+    procedure incluir(juros: TJuros);
+    procedure pesquisar(zGet: TZquery; edtDe, edtAte: double; TipoJuros: TTipoJuros);
+    Procedure getJuros(zGet: TZquery);
+    function getTipoJuros(): TDataSource;
+    function getStatusTipoJuros(): TDataSource;
+    function verificaExclusao(Juros : TJuros): boolean;
+
+  end;
+
+implementation
+
+
+{ TJurosDao }
+
+{ TJurosDao }
+
+procedure TJurosDao.incluir(juros: TJuros);
+var
+  zSet: TZQuery;
+  sSQL: string;
+  validar : TValidar;
+
+begin
+  try
+    zSet := TZQuery.Create(ZQuery);
+    zSet.Connection := dmPrincipal.ZConnection;
+    validar := TValidar.Create;
+
+    dmPrincipal.ZConnection.StartTransaction;
+    try
+      sSQL :=
+      'insert into juros (juros, jurosmora, acrescimo, tipojurosid, diaatraso, statusgrupoid) '+
+      'values ('+Validar.VirgulaPonto(FloatToStr(juros.getJuros))+', '+Validar.VirgulaPonto(FloatToStr(juros.getMora))+', '+
+      ' '+Validar.VirgulaPonto(FloatToStr(juros.getAcrescimo))+', '+ FloatToStr(juros.getTipoJuros.getCodigo)+', '+
+      ' '+IntToStr(juros.getDiaAtraso)+', '+IntToStr(juros.getStatusGrupo)+') ';
+
+      zSet.Close;
+      zSet.SQL.Text := sSQL;
+      zSet.ExecSQL;
+
+      zSet.Close;
+      zSet.SQL.Clear;
+      zSet.SQL.Text := 'select currval(''juros_id_seq'') as id';
+      zSet.Open;
+
+      dmPrincipal.ZConnection.Commit;
+    except
+      dmPrincipal.ZConnection.Rollback;
+    end;
+  finally
+    zSet.Close;
+    zSet.Free;
+    validar.Free;
+  end;
+end;
+
+procedure TJurosDao.editar(juros: TJuros);
+var
+  zSet: TZQuery;
+  sSQL: string;
+  validar : TValidar;
+begin
+  try
+    validar := TValidar.Create;
+
+    zSet := TZQuery.Create(ZQuery);
+    zSet.Connection := dmPrincipal.ZConnection;
+
+    sSQL := 'update juros set juros = '+validar.VirgulaPonto(FloatToStr(juros.getJuros))+', '
+            + 'jurosmora = '+validar.VirgulaPonto(FloatToStr(juros.getMora))+', '
+            + 'acrescimo = '+validar.VirgulaPonto(FloatToStr(juros.getAcrescimo))+', '
+            + 'tipojurosid = '+validar.VirgulaPonto(IntToStr(juros.getTipoJuros.getCodigo))+', '
+            + 'diaatraso = '+validar.VirgulaPonto(IntToStr(juros.getDiaAtraso))+', '
+            + 'statusgrupoid = '+validar.VirgulaPonto(intToStr(juros.getStatusGrupo))+' '
+            + 'where id  = '''+validar.VirgulaPonto(IntToStr(juros.getCodigo))+''' ';
+
+    zSet.Close;
+    zSet.SQL.Text := sSQL;
+    zSet.ExecSQL;
+  finally
+    zSet.Close;
+    zSet.Free;
+    validar.Free;
+  end;
+end;
+
+procedure TJurosDao.excluir(juros: Tjuros);
+var
+  zSet: TZQuery;
+  sSQL: string;
+begin
+  try
+    zSet := TZQuery.Create(ZQuery);
+    zSet.Connection := dmPrincipal.ZConnection;
+
+    sSQL := 'delete from juros where id = '''+IntToStr(juros.getCodigo)+''' ';
+
+    zSet.Close;
+    zSet.SQL.Text := sSQL;
+    zSet.ExecSQL;
+  finally
+    zSet.Close;
+    zSet.Free;
+  end;
+end;
+
+procedure TJurosDao.getJuros(zGet: TZquery);
+var
+  sSQL: string;
+begin
+  try
+    ZGet.Connection := dmPrincipal.ZConnection;
+
+    sSQL := 'select	juros.id as codigo, juros.juros, juros.jurosmora, '+
+    'juros.acrescimo, juros.diaatraso, tipojuros.id as CodTipoJuros,  '+
+    'cast(upper(tipojuros.descricao) as varchar(30)) as tipojuros, '+
+    'statusgrupo.descricao, juros.statusgrupoid '+
+    'from juros '+
+    'join tipojuros on juros.tipojurosid = tipojuros.id '+
+    'join statusgrupo on statusgrupo.id = juros.statusgrupoid where statusgrupo.grupostatusid = 6 ';
+
+
+    ZGet.SQL.Text := sSQL;
+    ZGet.Open;
+
+  except
+    ZGet.Close;
+    ZGet.Free;
+  end;
+end;
+
+function TJurosDao.getStatusTipoJuros: TDataSource;
+var
+  sSQL: string;
+  ZGet: TZQuery;
+  DS: TDataSource;
+begin
+  try
+    ZGet := TZQuery.Create(ZQuery);
+    ZGet.Connection := dmPrincipal.ZConnection;
+    DS := TDataSource.Create(DataSource);
+
+    DS.DataSet := ZGet;
+
+    sSQL := 'select * from statusgrupo where statusgrupo.grupostatusid = 6 ';
+
+    ZGet.SQL.Text := sSQL;
+    ZGet.Open;
+
+    result := DS;
+
+  except
+    ZGet.Close;
+    ZGet.Free;
+  end;
+end;
+
+procedure TJurosDao.pesquisar(zGet: TZquery; edtDe, edtAte: double;
+  TipoJuros: TTipoJuros);
+var
+  sSQL: string;
+
+begin
+  try
+
+   zGet.Connection := dmPrincipal.ZConnection;
+
+    sSQL := 'select	juros.id as codigo, juros.juros, juros.jurosmora, '+
+    'juros.acrescimo, juros.diaatraso, tipojuros.id as CodTipoJuros,  '+
+    'cast(upper(tipojuros.descricao) as varchar(30)) as tipojuros, '+
+    'statusgrupo.descricao, juros.statusgrupoid '+
+    'from juros '+
+    'join tipojuros on juros.tipojurosid = tipojuros.id '+
+    'join statusgrupo on statusgrupo.id = juros.statusgrupoid where statusgrupo.grupostatusid = 6 ';
+
+    if tipoJuros.getCodigo > 0 then
+     sSQL := sSQL + 'where tipojurosid = '+IntToStr(TipoJuros.getCodigo)+'  ';
+
+   if edtDe > 0 then
+      sSQL := sSQL + 'and juros.juros >= '+FloatToStr(edtDe)+'  ';
+
+   if edtAte > 0 then
+      sSQL := sSQL + 'and juros.juros <= '+FloatToStr(edtAte)+'  ';
+
+    zGet.Close;
+    zGet.SQL.Clear;
+    zGet.SQL.Text := sSQL;
+    zGet.Open;
+
+  except
+    zGet.Close;
+    zGet.Free;
+  end;
+end;
+
+function TJurosDao.verificaExclusao(Juros: TJuros): boolean;
+var
+  zGet : TZquery;
+  sSQL: string;
+  bExiste: boolean;
+begin
+  try
+  zGet := TZQuery.Create(ZQuery);
+  zGet.Connection := dmPrincipal.ZConnection;
+
+  sSQL := 'select * from cmf where cmf.jurosid = '''+Inttostr(Juros.getCodigo)+''' limit 1 ';
+    zGet.Close;
+    zGet.SQL.Text := sSQL;
+    zGet.Open;
+
+    bExiste := false;
+    if not zGet.IsEmpty then
+       if not zGet.FieldByName('id').IsNull then
+          bExiste := true;
+
+       if Juros.getStatusGrupo = 18 then
+           bExiste := true;
+  finally
+    result := bExiste;
+    zGet.Close;
+    zGet.Free;
+  end;
+end;
+
+function TJurosDao.getTipoJuros(): TDataSource;
+var
+  sSQL: string;
+  ZGet: TZQuery;
+  DS: TDataSource;
+begin
+  try
+    ZGet := TZQuery.Create(ZQuery);
+    ZGet.Connection := dmPrincipal.ZConnection;
+    DS := TDataSource.Create(DataSource);
+
+    DS.DataSet := ZGet;
+
+    sSQL := 'select id, cast(upper(descricao) as varchar(100))  as descricao from tipojuros ';
+
+    ZGet.SQL.Text := sSQL;
+    ZGet.Open;
+
+    result := DS;
+
+  except
+    ZGet.Close;
+    ZGet.Free;
+  end;
+end;
+
+end.

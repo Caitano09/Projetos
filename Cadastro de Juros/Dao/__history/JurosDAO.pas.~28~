@@ -1,0 +1,166 @@
+unit JurosDAO;
+
+interface
+
+uses
+  Juros, DB, ZAbstractRODataset, ZAbstractDataset,
+  ZDataset, SysUtils, ZConnection, uDMPrincipal, TipoJuros;
+
+type
+  TJurosDao = class
+
+  private
+    zquery : TZQuery;
+    dataSource: TDataSource;
+
+  public
+    procedure editar(juros : TJuros);
+    procedure excluir(juros: Tjuros);
+    procedure incluir(juros: TJuros);
+    procedure pesquisar(zGet: TZquery; edtDe, edtAte: double; TipoJuros: TTipoJuros);
+    Procedure getJuros(zGet: TZquery);
+
+  end;
+
+implementation
+
+
+{ TJurosDao }
+
+uses uPesquisaJuros;
+
+
+{ TJurosDao }
+
+procedure TJurosDao.incluir(juros: TJuros);
+var
+  zSet: TZQuery;
+  sSQL: string;
+
+begin
+  try
+    zSet := TZQuery.Create(ZQuery);
+    zSet.Connection := dmPrincipal.ZConnection;
+
+    dmPrincipal.ZConnection.StartTransaction;
+    try
+      sSQL :=
+      'insert into juros (juros, jurosmora, acrescimo, tipojurosid, diaatraso) '+
+      'values ('+FloatToStr(juros.getJuros)+', '+FloatToStr(juros.getMora)+', '+
+      ' '+FloatToStr(juros.getAcrescimo)+', '+FloatToStr(juros.getTipoJuros.getCodigo)+', '+
+      ' '+IntToStr(juros.getDiaAtraso)+') ';
+
+      zSet.Close;
+      zSet.SQL.Text := sSQL;
+      zSet.ExecSQL;
+
+      zSet.Close;
+      zSet.SQL.Clear;
+      zSet.SQL.Text := 'select currval(''juros_id_seq'') as id';
+      zSet.Open;
+
+      dmPrincipal.ZConnection.Commit;
+    except
+      dmPrincipal.ZConnection.Rollback;
+    end;
+  finally
+    zSet.Close;
+    zSet.Free;
+  end;
+end;
+
+procedure TJurosDao.editar(juros: TJuros);
+var
+  zSet: TZQuery;
+  sSQL: string;
+begin
+  try
+    zSet := TZQuery.Create(ZQuery);
+    zSet.Connection := dmPrincipal.ZConnection;
+
+    sSQL := 'update juros set juros = '+FloatToStr(juros.getJuros)+', '
+            + 'jurosmora = '+FloatToStr(juros.getMora)+', '
+            + 'acrescimo = '+FloatToStr(juros.getAcrescimo)+', '
+            + 'tipojurosid = '+IntToStr(juros.getTipoJuros.getCodigo)+', '
+            + 'diaatraso = '+IntToStr(juros.getDiaAtraso)+' '
+            + 'where id  = '''+IntToStr(juros.getCodigo)+''' ';
+
+    zSet.Close;
+    zSet.SQL.Text := sSQL;
+    zSet.ExecSQL;
+  finally
+    zSet.Close;
+    zSet.Free;
+  end;
+end;
+
+procedure TJurosDao.excluir(juros: Tjuros);
+var
+  zSet: TZQuery;
+  sSQL: string;
+begin
+  try
+    zSet := TZQuery.Create(ZQuery);
+    zSet.Connection := dmPrincipal.ZConnection;
+
+    delete from juros where id = 8
+    sSQL := 'delete from juros where id = '''+IntToStr(juros.getCodigo)+''' ';
+
+    zSet.Close;
+    zSet.SQL.Text := sSQL;
+    zSet.ExecSQL;
+  finally
+    zSet.Close;
+    zSet.Free;
+  end;
+end;
+
+procedure TJurosDao.getJuros(zGet: TZquery);
+var
+  sSQL: string;
+begin
+  try
+    ZGet.Connection := dmPrincipal.ZConnection;
+
+    sSQL := 'select	juros.id as codigo, juros.juros, juros.jurosmora, '+
+    'juros.acrescimo, juros.diaatraso, tipojuros.id as CodTipoJuros, cast(upper(tipojuros.descricao) as varchar(30)) as tipojuros '+
+    'from juros '+
+    'join tipojuros on juros.tipojurosid = tipojuros.id  ';
+
+    ZGet.SQL.Text := sSQL;
+    ZGet.Open;
+
+  except
+    ZGet.Close;
+    ZGet.Free;
+  end;
+end;
+
+procedure TJurosDao.pesquisar(zGet: TZquery; edtDe, edtAte: double;
+  TipoJuros: TTipoJuros);
+var
+  sSQL: string;
+
+begin
+  try
+
+   zGet.Connection := dmPrincipal.ZConnection;
+
+    sSQL := 'select	juros.id as codigo, juros.juros, juros.jurosmora, '+
+    'juros.acrescimo, juros.diaatraso, tipojuros.id as CodTipoJuros, cast(upper(tipojuros.descricao) as varchar(30)) as tipojuros '+
+    'from juros '+
+    'join tipojuros on juros.tipojurosid = tipojuros.id  where tipojurosid = '+IntToStr(TipoJuros.getCodigo)+'  '+
+    ' and juros.juros >= '+FloatToStr(edtDe)+' and juros.juros <= '+FloatToStr(edtAte)+' ';
+
+    zGet.Close;
+    zGet.SQL.Clear;
+    zGet.SQL.Text := sSQL;
+    zGet.Open;
+
+  except
+    zGet.Close;
+    zGet.Free;
+  end;
+end;
+
+end.
