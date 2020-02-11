@@ -1,0 +1,62 @@
+unit uControle;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+
+type
+  TfrmControle = class(TForm)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure BotaoGravar (codigo, descricao: string);
+    procedure BotaoVoltar();
+    procedure BotaoPesquisar();
+  end;
+
+var
+  frmControle: TfrmControle;
+
+implementation
+
+{$R *.dfm}
+
+uses uCadastro, uDao, uPesquisa;
+
+procedure TfrmControle.BotaoVoltar;
+begin
+ frmCadastro.Close;
+end;
+
+
+procedure TfrmControle.BotaoGravar(codigo: string; descricao: string);
+begin
+    if trim (descricao) = '' then
+  begin
+    ShowMessage('A caixa de texto descrição está vazia');
+  end
+
+  else if trim (codigo) = '' then
+  begin
+    ShowMessage('A caixa de texto código está vazia');
+  end
+
+  else
+  begin
+    frmDao.sqlInsert(codigo, descricao);
+    ShowMessage('Adicionado com sucesso');
+  end;
+end;
+
+procedure TfrmControle.BotaoPesquisar;
+begin
+  frmPesquisa := TfrmPesquisa.Create(Self);
+  frmPesquisa.ShowModal;
+end;
+
+end.
+
+

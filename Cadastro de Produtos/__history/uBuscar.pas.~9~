@@ -1,0 +1,85 @@
+unit uBuscar;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, RDprint, Vcl.Grids;
+
+type
+  TfrmBuscar = class(TForm)
+    StringGrid1: TStringGrid;
+    btnPrint: TButton;
+    btnImprimir: TButton;
+    btnVisualizar: TButton;
+    btnPesquisar: TButton;
+    btnVoltar: TButton;
+    edtDescricao: TEdit;
+    edtCodigo: TEdit;
+    lblDescricao: TLabel;
+    lblCodigo: TLabel;
+    procedure FormShow(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure btnImprimirClick(Sender: TObject);
+    procedure btnVisualizarClick(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
+    procedure btnVoltarClick(Sender: TObject);
+  private
+    { Private declarations }
+
+  public
+    { Public declarations }
+  end;
+
+var
+  frmBuscar: TfrmBuscar;
+
+implementation
+
+{$R *.dfm}
+
+uses uControls, Dados, uDm;
+
+//Botão Imprimir
+procedure TfrmBuscar.btnImprimirClick(Sender: TObject);
+begin
+  Tcontrols.BotaoImprimir();
+end;
+
+//Botão Pequisar
+procedure TfrmBuscar.btnPesquisarClick(Sender: TObject);
+begin
+
+  Tcontrols.BotaoPesquisar2(edtCodigo.Text, edtDescricao.Text);
+  Tcontrols.CriacaoForm();
+
+end;
+
+//Botão Print
+procedure TfrmBuscar.btnPrintClick(Sender: TObject);
+begin
+  Tcontrols.BotaoPrint();
+end;
+
+//Botão Visualizar
+procedure TfrmBuscar.btnVisualizarClick(Sender: TObject);
+begin
+  Tcontrols.BotaoVisualizar();
+  Tcontrols.SetVoltarOuVisualizar(true);
+end;
+
+//Botão Voltar
+procedure TfrmBuscar.btnVoltarClick(Sender: TObject);
+begin
+
+    Tcontrols.SetVoltarOuVisualizar(false);
+    Tcontrols.BotaoVoltar2;
+end;
+
+//Exibindo Formulário
+procedure TfrmBuscar.FormShow(Sender: TObject);
+begin
+  Tcontrols.CriacaoForm();
+end;
+
+end.

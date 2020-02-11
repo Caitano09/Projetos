@@ -1,0 +1,21 @@
+program Project3;
+
+uses
+  Vcl.Forms,
+  uCadastro in 'uCadastro.pas' {frmCadastro},
+  uPesquisa in 'uPesquisa.pas' {frmPesquisa},
+  uRelatorio in 'uRelatorio.pas' {frmRelatorio},
+  uControls in 'uControls.pas',
+  uDm in 'uDm.pas' {DataModule1: TDataModule},
+  Dados in 'Dados.pas',
+  uModel in 'uModel.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmCadastro, frmCadastro);
+  Application.CreateForm(TDataModule1, DataModule1);
+  Application.Run;
+end.

@@ -1,0 +1,93 @@
+unit uControle;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+
+type
+  TfrmControle = class(TForm)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure CriacaoForm();
+    procedure BotaoGravar (codigo, descricao: string);
+    procedure BotaoVoltar();
+    procedure BotaoPesquisar1();
+    procedure BotaoPesquisar2(codigo, descricao: String);
+  end;
+
+var
+  frmControle: TfrmControle;
+
+implementation
+
+{$R *.dfm}
+
+uses uCadastro, uDao, uPesquisa;
+
+procedure TfrmControle.BotaoVoltar;
+begin
+ frmCadastro.Close;
+end;
+
+
+procedure TfrmControle.BotaoGravar(codigo: string; descricao: string);
+begin
+    if trim (descricao) = '' then
+  begin
+    ShowMessage('A caixa de texto descrição está vazia');
+  end
+
+  else if trim (codigo) = '' then
+  begin
+    ShowMessage('A caixa de texto código está vazia');
+  end
+
+  else
+  begin
+    frmDao.sqlInsert(codigo, descricao);
+    ShowMessage('Adicionado com sucesso');
+  end;
+end;
+
+procedure TfrmControle.BotaoPesquisar1;
+begin
+  frmPesquisa := TfrmPesquisa.Create(Self);
+  frmPesquisa.ShowModal;
+end;
+
+procedure TfrmControle.BotaoPesquisar2(codigo: string; descricao: string);
+
+begin
+
+  if (Trim(Descricao) <> '') and (Trim(Codigo) <> '') then
+ begin
+    frmDao.sqlSelect(1, descricao, codigo);
+ end
+
+  else if (Trim(Descricao) = '') and (Trim(Codigo) <> '') then
+  begin
+    frmDao.sqlSelect(2, descricao, codigo);
+  end
+
+  else if (Trim(Descricao) <> '') and (Trim(Codigo) = '') then
+  begin
+    frmDao.sqlSelect(3, descricao, codigo);
+  end
+
+  else
+  begin
+    ShowMessage('Campos vazios');
+  end;
+
+end;
+
+
+
+
+end.
+
+

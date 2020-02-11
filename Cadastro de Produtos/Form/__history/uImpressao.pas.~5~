@@ -1,0 +1,38 @@
+unit uPesquisaData;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask, uImpressao2,
+  Vcl.ComCtrls;
+
+type
+  TForm1 = class(TForm)
+    lblDataInicial: TLabel;
+    lblDataFinal: TLabel;
+    btnPesquisar: TButton;
+    dataInicio: TDateTimePicker;
+    dataFim: TDateTimePicker;
+    procedure btnPesquisarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+uses Dados, Controls;
+
+procedure TForm1.btnPesquisarClick(Sender: TObject);
+begin
+  Tcontrols.criacaoFormImpressao2(dataInicio.Date, dataFim.Date);
+end;
+
+end.

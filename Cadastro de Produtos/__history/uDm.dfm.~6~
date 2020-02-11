@@ -1,0 +1,47 @@
+object DataModule1: TDataModule1
+  OldCreateOrder = False
+  Height = 199
+  Width = 331
+  object ZConnection1: TZConnection
+    ControlsCodePage = cCP_UTF16
+    AutoEncodeStrings = True
+    Catalog = ''
+    Connected = True
+    HostName = 'localhost'
+    Port = 5432
+    Database = 'db_sgc'
+    User = 'postgres'
+    Password = 'acess6g1/'
+    Protocol = 'postgresql'
+    Left = 88
+    Top = 104
+  end
+  object ZQuery1: TZQuery
+    Connection = ZConnection1
+    Active = True
+    SQL.Strings = (
+      'select *from tipoproduto')
+    Params = <>
+    Left = 216
+    Top = 144
+  end
+  object DataSource1: TDataSource
+    DataSet = ZQuery1
+    Left = 275
+    Top = 144
+  end
+  object ZQuery2: TZQuery
+    Connection = ZConnection1
+    Active = True
+    SQL.Strings = (
+      'select * from vw_usuariasistema')
+    Params = <>
+    Left = 224
+    Top = 56
+  end
+  object DataSource2: TDataSource
+    DataSet = ZQuery2
+    Left = 272
+    Top = 56
+  end
+end

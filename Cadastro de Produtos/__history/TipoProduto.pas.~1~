@@ -1,0 +1,55 @@
+unit uModel;
+
+interface
+
+uses
+Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB;
+type
+  Tmodel = class
+
+    strict private
+     //Campos
+      FCodigo: String;
+      FDescricao: String;
+
+      //getters
+      function GetCodigo(): String;
+      function GetDescricao(): String;
+
+      //setters
+      procedure SetCodigo (const Value: String);
+      procedure SetDescricao (const Value: String);
+
+      public
+      //Propriedades
+      property Codigo: String read GetCodigo write SetCodigo;
+      property Descricao: String read GetDescricao write SetDescricao;
+
+  end;
+
+
+implementation
+
+function Tmodel.GetCodigo(): string;
+begin
+ Result := Codigo;
+end;
+
+function Tmodel.GetDescricao(): string;
+
+begin
+  Result := Descricao;
+end;
+
+procedure Tmodel.SetCodigo(const Value: string);
+begin
+  Codigo := Value;
+end;
+
+procedure Tmodel.SetDescricao(const Value: string);
+begin
+  Descricao := Value;
+end;
+
+end.

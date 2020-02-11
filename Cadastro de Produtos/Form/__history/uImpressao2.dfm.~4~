@@ -1,0 +1,121 @@
+object Form2: TForm2
+  Left = 0
+  Top = 0
+  Caption = 'Form2'
+  ClientHeight = 472
+  ClientWidth = 725
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object RLReport1: TRLReport
+    Left = 0
+    Top = 0
+    Width = 794
+    Height = 1123
+    DataSource = DataModule1.DataSource3
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    object RLBand1: TRLBand
+      Left = 38
+      Top = 38
+      Width = 718
+      Height = 83
+      BandType = btColumnHeader
+      object RLLabel1: TRLLabel
+        Left = 56
+        Top = 45
+        Width = 16
+        Height = 16
+        Caption = 'ID'
+      end
+      object RLLabel2: TRLLabel
+        Left = 138
+        Top = 45
+        Width = 34
+        Height = 16
+        Caption = 'Valor'
+      end
+      object RLLabel3: TRLLabel
+        Left = 256
+        Top = 45
+        Width = 70
+        Height = 16
+        Caption = 'Documento'
+      end
+      object RLLabel4: TRLLabel
+        Left = 392
+        Top = 45
+        Width = 73
+        Height = 16
+        Caption = 'Vencimento'
+      end
+      object RLLabel5: TRLLabel
+        Left = 536
+        Top = 45
+        Width = 42
+        Height = 16
+        Caption = 'Status'
+      end
+    end
+    object RLBand2: TRLBand
+      Left = 38
+      Top = 121
+      Width = 718
+      Height = 48
+      object RLDBText1: TRLDBText
+        Left = 56
+        Top = 29
+        Width = 44
+        Height = 16
+        DataField = 'valor_1'
+        DataSource = DataModule1.DataSource3
+        Text = ''
+      end
+      object RLDBText2: TRLDBText
+        Left = 152
+        Top = 29
+        Width = 30
+        Height = 16
+        DataField = 'valor'
+        DataSource = DataModule1.DataSource3
+        Text = ''
+      end
+      object RLDBText3: TRLDBText
+        Left = 256
+        Top = 29
+        Width = 111
+        Height = 16
+        DataField = 'numerodocumento'
+        DataSource = DataModule1.DataSource3
+        Text = ''
+      end
+      object RLDBText4: TRLDBText
+        Left = 392
+        Top = 29
+        Width = 108
+        Height = 16
+        DataField = 'datavencimento_1'
+        DataSource = DataModule1.DataSource3
+        Text = ''
+      end
+      object RLDBText5: TRLDBText
+        Left = 536
+        Top = 24
+        Width = 108
+        Height = 16
+        DataField = 'datavencimento_1'
+        DataSource = DataModule1.DataSource3
+        Text = ''
+      end
+    end
+  end
+end

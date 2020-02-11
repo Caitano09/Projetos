@@ -1,0 +1,155 @@
+object DataModule1: TDataModule1
+  OldCreateOrder = False
+  Height = 199
+  Width = 331
+  object ZConnection1: TZConnection
+    ControlsCodePage = cCP_UTF16
+    AutoEncodeStrings = True
+    Catalog = ''
+    Connected = True
+    HostName = 'localhost'
+    Port = 5432
+    Database = 'db_sgc'
+    User = 'postgres'
+    Password = 'acess6g1/'
+    Protocol = 'postgresql'
+    Left = 112
+    Top = 120
+  end
+  object ZQuery1: TZQuery
+    Connection = ZConnection1
+    Active = True
+    SQL.Strings = (
+      ''
+      
+        'select tipoproduto.id, tipoproduto.codigo, cast (tipoproduto.des' +
+        'cricao as varchar (50)) as descricao from tipoproduto where id i' +
+        's not null order by id asc')
+    Params = <>
+    Left = 216
+    Top = 144
+  end
+  object DataSource1: TDataSource
+    DataSet = ZQuery1
+    Left = 275
+    Top = 144
+  end
+  object ZQuery2: TZQuery
+    Connection = ZConnection1
+    Active = True
+    SQL.Strings = (
+      'select * from vw_usuariasistema')
+    Params = <>
+    Left = 208
+    Top = 56
+  end
+  object DataSource2: TDataSource
+    DataSet = ZQuery2
+    Left = 272
+    Top = 56
+  end
+  object RDprint1: TRDprint
+    ImpressoraPersonalizada.NomeImpressora = 'Modelo Personalizado - (Epson)'
+    ImpressoraPersonalizada.AvancaOitavos = '27 48'
+    ImpressoraPersonalizada.AvancaSextos = '27 50'
+    ImpressoraPersonalizada.SaltoPagina = '12'
+    ImpressoraPersonalizada.TamanhoPagina = '27 67 66'
+    ImpressoraPersonalizada.Negrito = '27 69'
+    ImpressoraPersonalizada.Italico = '27 52'
+    ImpressoraPersonalizada.Sublinhado = '27 45 49'
+    ImpressoraPersonalizada.Expandido = '27 14'
+    ImpressoraPersonalizada.Normal10 = '18 27 80'
+    ImpressoraPersonalizada.Comprimir12 = '18 27 77'
+    ImpressoraPersonalizada.Comprimir17 = '27 80 27 15'
+    ImpressoraPersonalizada.Comprimir20 = '27 77 27 15'
+    ImpressoraPersonalizada.Reset = '27 80 18 20 27 53 27 70 27 45 48'
+    ImpressoraPersonalizada.Inicializar = '27 64'
+    OpcoesPreview.PaginaZebrada = False
+    OpcoesPreview.MostrarSETUP = True
+    OpcoesPreview.Remalina = False
+    OpcoesPreview.CaptionPreview = 'RDPrint Preview'
+    OpcoesPreview.PreviewZoom = 100
+    OpcoesPreview.CorPapelPreview = clWhite
+    OpcoesPreview.CorLetraPreview = clBlack
+    OpcoesPreview.Preview = False
+    OpcoesPreview.BotaoSetup = Invisivel
+    OpcoesPreview.BotaoImprimir = Ativo
+    OpcoesPreview.BotaoGravar = Ativo
+    OpcoesPreview.BotaoLer = Ativo
+    OpcoesPreview.BotaoProcurar = Ativo
+    OpcoesPreview.BotaoPDF = Ativo
+    OpcoesPreview.BotaoEMAIL = Ativo
+    OpcoesPreview.ExtraBtnStatus = Invisivel
+    OpcoesPreview.ExtraBtnWidth = 80
+    OpcoesPreview.ExtraBtnCaption = 'Extra Btn'
+    Margens.Left = 5
+    Margens.Right = 5
+    Margens.Top = 5
+    Margens.Bottom = 5
+    Autor = Deltress
+    RegistroUsuario.NomeRegistro = 'G10 SISTEMAS'
+    RegistroUsuario.SerieProduto = 'SINGLE 6.3 - 2112/0519 (DX103)'
+    RegistroUsuario.AutorizacaoKey = '4TM1J-YEJ23-2PBHU-JAFJ1-USIEL-6QYU4-THFN7'
+    About = 'RDprint 6.3a'
+    Acentuacao = Transliterate
+    CaptionSetup = 'RDprint Setup'
+    TitulodoRelatorio = 'Gerado por RDprint'
+    UsaGerenciadorImpr = True
+    CorForm = clBtnFace
+    CorFonte = clBlack
+    Impressora = Epson
+    Mapeamento.Strings = (
+      '//--- Grafico Compativel com Windows/USB ---//'
+      '//'
+      'GRAFICO=GRAFICO'
+      'HP=GRAFICO'
+      'DESKJET=GRAFICO'
+      'LASERJET=GRAFICO'
+      'INKJET=GRAFICO'
+      'STYLUS=GRAFICO'
+      'EPL=GRAFICO'
+      'USB=GRAFICO'
+      '//'
+      '//--- Linha Epson Matricial 9 e 24 agulhas ---//'
+      '//'
+      'EPSON=EPSON'
+      'GENERIC=EPSON'
+      'TEXT=EPSON'
+      'LX-300=EPSON'
+      'LX-810=EPSON'
+      'FX-2170=EPSON'
+      'FX-1170=EPSON'
+      'LQ-1170=EPSON'
+      'LQ-2170=EPSON'
+      'OKIDATA=EPSON'
+      '//'
+      '//--- Rima e Emilia ---//'
+      '//'
+      'RIMA=RIMA'
+      'EMILIA=RIMA'
+      '//'
+      '//--- Linha HP/Xerox padr'#227'o PCL ---//'
+      '//'
+      'PCL=HP'
+      '//'
+      '//--- Impressoras 40 Colunas ---//'
+      '//'
+      'DR700=DARUMA'
+      'DARUMA=BOBINA'
+      'SIGTRON=BOBINA'
+      'SWEDA=BOBINA'
+      'BEMATECH=BOBINA')
+    MostrarProgresso = True
+    TamanhoQteLinhas = 66
+    TamanhoQteColunas = 80
+    TamanhoQteLPP = Seis
+    NumerodeCopias = 1
+    FonteTamanhoPadrao = S10cpp
+    FonteEstiloPadrao = []
+    Orientacao = poPortrait
+    FonteGrafica = sCourierNew
+    ReduzParaCaber = True
+    Left = 112
+    Top = 63
+  end
+end

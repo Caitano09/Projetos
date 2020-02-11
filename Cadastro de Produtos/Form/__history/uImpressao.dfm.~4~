@@ -1,0 +1,69 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 117
+  ClientWidth = 210
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lblDataInicial: TLabel
+    Left = 8
+    Top = 13
+    Width = 64
+    Height = 13
+    Caption = 'Data Inicial'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lblDataFinal: TLabel
+    Left = 8
+    Top = 69
+    Width = 56
+    Height = 13
+    Caption = 'Data Final'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object btnPesquisar: TButton
+    Left = 112
+    Top = 57
+    Width = 75
+    Height = 25
+    Caption = 'Pesquisar'
+    TabOrder = 0
+    OnClick = btnPesquisarClick
+  end
+  object dataInicio: TDateTimePicker
+    Left = 8
+    Top = 42
+    Width = 81
+    Height = 21
+    Date = 43755.000000000000000000
+    Time = 0.429803495368105400
+    TabOrder = 1
+  end
+  object dataFim: TDateTimePicker
+    Left = 8
+    Top = 88
+    Width = 81
+    Height = 21
+    Date = 43755.000000000000000000
+    Time = 0.430134039350377900
+    TabOrder = 2
+  end
+end

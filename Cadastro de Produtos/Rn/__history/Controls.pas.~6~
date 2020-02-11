@@ -1,0 +1,319 @@
+unit Controls;
+
+interface
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids;
+type
+  Tcontrols = class (Tform)
+      private
+
+      public
+    { Public declarations }
+
+     class function getVoltarOuVisualizar(): Boolean;
+     class procedure setGravarOuAlterar(opcao: Boolean);
+     class procedure setVoltarOuVisualizar(opcao: Boolean);
+
+
+    class procedure criacaoForm();
+    class procedure botaoGravar (codigo, descricao: string);
+    class procedure botaoVoltar1();
+    class procedure botaoVoltar2();
+    class procedure botaoPesquisar1();
+    class procedure botaoPesquisar2(codigo, descricao: String);
+    class procedure botaoVisualizar();
+    class procedure botaoPrint();
+    class procedure botaoImprimir();
+    class procedure botaoExcluir();
+    class procedure teclasAtalhos(key: word);
+    class procedure teclasAtalhos2(key: word);
+    class procedure zebrarDBGrid(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+  end;
+
+  var
+  bGravar: Boolean;
+  bVisualizar: boolean;
+  bExiste : boolean;
+
+implementation
+
+uses  uCadastro, uPesquisa, uRelatorio, Dados, uDm, uBuscar;
+
+// Seta o valor (Novo/ALterar)
+class procedure Tcontrols.setGravarOuAlterar(opcao: Boolean);
+begin
+  bGravar := opcao;
+end;
+
+
+// Seta o valor (Voltar/Visualizar)
+class procedure Tcontrols.setVoltarOuVisualizar(opcao: Boolean);
+begin
+  bVisualizar := opcao;
+end;
+
+
+// Devolve o valor (Voltar/Visualizar)
+class function Tcontrols.getVoltarOuVisualizar;
+begin
+  result := bVisualizar;
+end;
+
+//Botão Voltar (Formulário de Cadastro)
+class procedure Tcontrols.botaoVoltar1;
+begin
+ frmCadastro.Close;
+end;
+
+// Botão Voltar (Formulário de Pesquisa/Buscar)
+class procedure Tcontrols.botaoVoltar2;
+begin
+ frmPesquisa.Close;
+ //frmBuscar.Close;
+end;
+
+// Botão Gravar
+class procedure Tcontrols.botaoGravar(codigo: string; descricao: string);
+begin
+  //Verifica se o sql vai retornar algo
+  Tcontrols.botaoPesquisar2(codigo, '');
+  bExiste := DataModule1.ZQuery1.IsEmpty;
+  Tcontrols.botaoPesquisar2('', descricao);
+
+  //Verifica se os campos estão vazios
+  if trim (descricao) = '' then
+  begin
+    ShowMessage('A caixa de texto descrição está vazia');
+  end
+
+  else if trim (codigo) = '' then
+  begin
+    ShowMessage('A caixa de texto código está vazia');
+  end
+
+  // Testa se o sql está vazio
+  else if (not DataModule1.ZQuery1.IsEmpty) then
+  begin
+    ShowMessage('Descricão já existe');
+  end
+
+  else if (not bExiste) then
+  begin
+    ShowMessage('Codigo já existe');
+  end
+
+  //Testa o valor Booleano
+  else if not bGravar then
+  begin
+    Tdados.sqlInsert(codigo, descricao);
+    ShowMessage('Adicionado com sucesso');
+  end
+
+  else if bGravar then
+  begin
+    if Application.MessageBox('Deseja Alterar?', 'Stop', mb_yesno + mb_iconquestion) = id_yes then
+     begin
+        Tdados.sqlUpdate(objTipoProduto.Id, codigo, descricao);
+        ShowMessage('Alterado com sucesso');
+     end;
+  end;
+end;
+
+//Botão Excluir
+class procedure Tcontrols.botaoExcluir;
+begin
+
+  //Verifica se o id não está sendo usado
+  Tdados.verificaExclusão( objTipoProduto.Id );
+  if (not DataModule1.ZQuery1.IsEmpty) then
+  begin
+    ShowMessage('Item está sendo usado na tabela produto');
+  end
+
+  else if Application.MessageBox('Deseja excluir?', 'Stop', mb_yesno + mb_iconquestion) = id_yes then
+  begin
+    Tdados.sqlDelete(objTipoProduto.Id );
+   ShowMessage('Item excluído');
+  end;
+
+end;
+
+
+//Botão Pesquisar (Formulário de Cadastro)
+class procedure Tcontrols.botaoPesquisar1;
+begin
+  Tdados.selectTudo();
+  //frmBuscar := TfrmBuscar.Create(frmBuscar);
+  //frmBuscar.ShowModal;
+  frmPesquisa := TfrmPesquisa.Create(frmPesquisa);
+  frmPesquisa.ShowModal;
+end;
+
+
+//Criação do Form Pesquisa
+class procedure Tcontrols.criacaoForm;
+var
+    iLinha: integer;
+
+begin
+
+   //Tdados.selectTudo();
+  {with uBuscar.frmBuscar.StringGrid1 do begin
+    ColCount := DataModule1.ZQuery1.FieldCount;
+    RowCount := DataModule1.ZQuery1.RecordCount + 1;
+
+    ColWidths[0] := 40;
+    ColWidths[1] := 100;
+    ColWidths[2] := 100;
+
+    cells[0, 0] := DataModule1.ZQuery1.Fields[0].FieldName;
+    cells[1, 0] := DataModule1.ZQuery1.Fields[1].FieldName;
+    cells[2, 0] := DataModule1.ZQuery1.Fields[2].FieldName;
+
+    DataModule1.ZQuery1.First;
+
+    for iLinha := 0 to RowCount do
+
+      begin
+
+        cells[0,  iLinha+1] := DataModule1.ZQuery1.FieldByName('id').AsString;
+        cells[1,  iLinha+1] := DataModule1.ZQuery1.FieldByName('codigo').AsString;
+        cells[2,  iLinha+1] := DataModule1.ZQuery1.FieldByName('descricao').AsString;
+        DataModule1.ZQuery1.Next;//Proximo Registro
+      end;
+
+  end; }
+
+end;
+
+//Botão Pesquisar (Formulário de Pesquisa/Buscar)
+class procedure Tcontrols.botaoPesquisar2(codigo: string; descricao: string);
+begin
+  if (Trim(Descricao) <> '') and (Trim(Codigo) <> '') then
+ begin
+        Tdados.sqlSelect(1, descricao, codigo);
+ end
+
+  else if (Trim(Descricao) = '') and (Trim(Codigo) <> '') then
+  begin
+        Tdados.sqlSelect(2, descricao, codigo);
+  end
+
+  else if (Trim(Descricao) <> '') and (Trim(Codigo) = '') then
+  begin
+        Tdados.sqlSelect(3, descricao, codigo);
+  end
+
+  else
+  begin
+    ShowMessage('Campos vazios');
+    Tdados.SelectTudo;
+  end;
+
+end;
+
+//Botão Visualizar
+class procedure Tcontrols.botaoVisualizar;
+begin
+  objTipoProduto.Id := DataModule1.ZQuery1.FieldByName('id').AsInteger;
+  frmCadastro.edtCodigo.Text := DataModule1.ZQuery1.FieldByName('codigo').AsString;
+  frmCadastro.edtdescricao.Text := DataModule1.ZQuery1.FieldByName('descricao').AsString;
+  Tcontrols.BotaoVoltar2;
+end;
+
+//Botão Print (RDPrint)
+class procedure Tcontrols.botaoPrint;
+  var i, id: Integer;
+
+  begin
+    DataModule1.RDprint1.Abrir; //Abertura
+    if DataModule1.RDprint1.Setup = true then //Verificando Setup
+
+    begin                    //Linha  Coluna  Texto
+      DataModule1.RDprint1.Imp(1,     1,      'TIPOPRODUTO');
+      DataModule1.RDprint1.Imp(3, 1, '-------------------------------------------------');
+      DataModule1.RDprint1.Imp(4, 01, 'ID');
+      DataModule1.RDprint1.Imp(4, 15, 'CODIGO');
+      DataModule1.RDprint1.Imp(4, 30, 'DESCRICÃO');
+      DataModule1.RDprint1.Imp(5, 1, '-------------------------------------------------');
+      DataModule1.ZQuery1.First; //Primeiro Registro
+      i := 6;
+
+      repeat
+      begin
+        DataModule1.RDprint1.Imp(i, 01, DataModule1.ZQuery1.FieldByName('id').AsString);
+        DataModule1.RDprint1.Imp(i, 15, DataModule1.ZQuery1.FieldByName('codigo').AsString);
+        DataModule1.RDprint1.Imp(i, 30, DataModule1.ZQuery1.FieldByName('descricao').AsString);
+        id := DataModule1.ZQuery1.FieldByName('id').AsInteger;
+        DataModule1.ZQuery1.Next;//Proximo Registro
+        i := i +1;
+      end;
+      until (id = DataModule1.ZQuery1.FieldByName('id').AsInteger); //Condição de Saída
+      DataModule1.RDprint1.Imp(66, 60, FormatDateTime('dd/mm/yyyy HH: MM: SS', NOW));
+      DataModule1.RDprint1.Fechar;//Fechamento
+  end;
+end;
+
+//Botão Imprimir (Fortes Report)
+class procedure Tcontrols.botaoImprimir;
+begin
+  frmRelatorio:= TfrmRelatorio.Create(frmRelatorio);
+  frmRelatorio.RLReport1.Preview;
+end;
+
+ //Teclas de atalho (form Cadastro)
+class procedure Tcontrols.teclasAtalhos(key: Word);
+begin
+  with frmCadastro do
+  begin
+    case key of
+    VK_ESCAPE: if (btnVoltar.Enabled = true) then btnVoltar.Click;
+    VK_F10: if (btnNovo.Enabled = true) then  btnNovo.Click;
+    VK_F4: if (btnAlterar.Enabled = true) then btnAlterar.Click;
+    VK_F6: if (btnExcluir.Enabled = true) then btnExcluir.Click;
+    VK_F3: if (btnGravar.Enabled = true) then btnGravar.Click;
+    VK_F2: if (btnCancelar.Enabled = true) then btnCancelar.Click;
+    VK_F5: if (btnPesquisar.Enabled = true) then btnPesquisar.Click;
+  end;
+
+  end;
+end;
+
+ //Teclas de atalho (form Pesquisa/Buscar)
+class procedure Tcontrols.teclasAtalhos2(key: Word);
+begin
+  with {frmBuscar}frmPesquisa do
+  begin
+    case key of
+      VK_ESCAPE: btnVoltar.Click;
+      VK_F7: btnImprimir.Click;
+      VK_F5: btnPesquisar.Click;
+    end;
+  end;
+end;
+
+//Zebrando DbGrid
+class procedure Tcontrols.zebrarDBGrid(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+ with frmPesquisa do
+ begin
+     if not (gdSelected in State) then
+  begin
+    if Odd((Sender as TDBGrid).DataSource.DataSet.RecNo) then
+      (Sender as TDBGrid).Canvas.Brush.Color:= clWhite
+    else
+      (Sender as TDBGrid).Canvas.Brush.Color:= clSkyBlue; // leve cinza
+
+    // Aplicando prto para a cor da fonte
+    (Sender as TDBGrid).Canvas.Font.Color:= clBlack;
+
+    (Sender as TDBGrid).Canvas.FillRect(Rect);
+    (Sender as TDBGrid).Canvas.TextOut(Rect.Left + 2, Rect.Top,
+    Column.Field.DisplayText);
+  end;
+ end;
+end;
+
+end.

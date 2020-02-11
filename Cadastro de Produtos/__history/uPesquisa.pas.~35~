@@ -1,0 +1,114 @@
+unit uPesquisa;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, Vcl.Grids, Vcl.DBGrids,
+  RDprint, Vcl.Imaging.pngimage, Vcl.ExtCtrls, System.ImageList, Vcl.ImgList,
+  PngImageList, Vcl.ComCtrls, Vcl.ToolWin;
+
+type
+  TfrmPesquisa = class(TForm)
+    edtCodigo: TEdit;
+    edtDescricao: TEdit;
+    lblCodigo: TLabel;
+    lblDescricao: TLabel;
+    DBGrid1: TDBGrid;
+    ToolBar1: TToolBar;
+    btnVoltar: TToolButton;
+    btnVisualizar: TToolButton;
+    btnPesquisar: TToolButton;
+    btnImprimir: TToolButton;
+    btnPrint: TToolButton;
+    PngImageList1: TPngImageList;
+    Panel1: TPanel;
+    lblRegistro: TLabel;
+    procedure btnVoltarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
+    procedure btnVisualizarClick(Sender: TObject);
+    procedure btnImprimirClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure FormPaint(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+
+  end;
+
+var
+  frmPesquisa: TfrmPesquisa;
+
+implementation
+
+{$R *.dfm}
+
+uses uCadastro, uRelatorio, uControls, uDm;
+
+//Botão Imprimir
+procedure TfrmPesquisa.btnImprimirClick(Sender: TObject);
+begin
+  Tcontrols.BotaoImprimir();
+end;
+
+//Botão Pesquisar
+procedure TfrmPesquisa.btnPesquisarClick(Sender: TObject);
+begin
+  Tcontrols.BotaoPesquisar2(edtCodigo.Text ,edtdescricao.Text);
+  edtCodigo.Clear;
+  edtDescricao.Clear;
+
+end;
+
+// Botão Visualizar
+procedure TfrmPesquisa.btnVisualizarClick(Sender: TObject);
+begin
+  Tcontrols.BotaoVisualizar;
+  Tcontrols.SetVoltarOuVisualizar(true);
+end;
+
+//Botão Voltar
+procedure TfrmPesquisa.btnVoltarClick(Sender: TObject);
+begin
+  Tcontrols.SetVoltarOuVisualizar(false);
+  Tcontrols.BotaoVoltar2;
+end;
+
+//Zebrar DBGrid
+procedure TfrmPesquisa.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  Tcontrols.ZebrarDBGrid(Sender, Rect,DataCol, column, state);
+end;
+
+// Botão Print
+procedure TfrmPesquisa.btnPrintClick(Sender: TObject);
+begin
+  Tcontrols.BotaoPrint;
+end;
+
+ //Teclas de atalho
+procedure TfrmPesquisa.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  Tcontrols.TeclasAtalhos2(key);
+end;
+
+procedure TfrmPesquisa.FormPaint(Sender: TObject);
+begin
+  lblRegistro.Caption := inttostr(DBGrid1.DataSource.DataSet.RecordCount);
+end;
+
+// Exibindo o Formulário
+procedure TfrmPesquisa.FormShow(Sender: TObject);
+begin
+  Tcontrols.CriacaoForm;
+end;
+
+end.

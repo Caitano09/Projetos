@@ -1,0 +1,41 @@
+unit uRelatorio;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, RLReport;
+
+type
+  TfrmRelatorio = class(TForm)
+    RLReport1: TRLReport;
+    RLBand1: TRLBand;
+    RLBand2: TRLBand;
+    RLBand3: TRLBand;
+    RLDraw1: TRLDraw;
+    RLLabel1: TRLLabel;
+    RLLabel2: TRLLabel;
+    RLLabel3: TRLLabel;
+    RLLabel4: TRLLabel;
+    RLDBText1: TRLDBText;
+    RLDBText2: TRLDBText;
+    RLDBText3: TRLDBText;
+    RLBand4: TRLBand;
+    RLSystemInfo1: TRLSystemInfo;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmRelatorio: TfrmRelatorio;
+
+implementation
+
+{$R *.dfm}
+
+uses uControls, Dao;
+
+end.

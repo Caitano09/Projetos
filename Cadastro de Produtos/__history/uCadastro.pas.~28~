@@ -1,0 +1,216 @@
+unit uCadastro;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, ZAbstractConnection,
+  ZConnection, RLReport, Vcl.Imaging.pngimage, Vcl.ExtCtrls;
+
+type
+  TfrmCadastro = class(TForm)
+    btnGravar: TButton;
+    edtCodigo: TEdit;
+    edtDescricao: TEdit;
+    lblCodigo: TLabel;
+    lblDescricao: TLabel;
+    btnVoltar: TButton;
+    btnNovo: TButton;
+    btnAlterar: TButton;
+    btnExcluir: TButton;
+    btnCancelar: TButton;
+    btnPesquisar: TButton;
+    imgPesquisar: TImage;
+    imgCancelar: TImage;
+    imgGravar: TImage;
+    imgExcluir: TImage;
+    imgAlterar: TImage;
+    imgNovo: TImage;
+    imgVoltar: TImage;
+    Image1: TImage;
+    Image2: TImage;
+    Image3: TImage;
+    Image4: TImage;
+    Image5: TImage;
+    Image6: TImage;
+    Image7: TImage;
+    Image8: TImage;
+    procedure btnGravarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnVoltarClick(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure botoesAtivados();
+  public
+    { Public declarations }
+
+  end;
+
+var
+  frmCadastro: TfrmCadastro;
+
+implementation
+
+{$R *.dfm}
+
+uses uPesquisa, uRelatorio, uControls;
+
+procedure TfrmCadastro.botoesAtivados;
+//Botões Ativados
+begin
+  edtDescricao.Enabled := false;
+  edtCodigo.Enabled := false;
+
+  btnVoltar.Enabled := true;
+
+  btnNovo.Enabled := true;
+  btnPesquisar.Enabled := true;
+  btnCancelar.Enabled := false;
+  btnGravar.Enabled := false;
+  btnExcluir.Enabled := false;
+  btnAlterar.Enabled := false;
+
+  imgNovo.Visible := true;
+  imgVoltar.Visible := true;
+  imgPesquisar.Visible := true;
+  imgCancelar.Visible := false;
+  imgGravar.Visible := false;
+  imgExcluir.Visible := false;
+  imgAlterar.Visible := false;
+
+  edtCodigo.Clear;
+  edtDescricao.Clear;
+
+end;
+
+procedure TfrmCadastro.btnAlterarClick(Sender: TObject);
+//Botão Alterar
+begin
+
+  Tcontrols.SetGravarOuAlterar(true);
+  edtDescricao.Enabled := true;
+  edtCodigo.Enabled := true;
+
+  btnCancelar.Enabled := true;
+  btnGravar.Enabled := true;
+  btnExcluir.Enabled := false;
+  btnAlterar.Enabled := false;
+  btnNovo.Enabled := false;
+  btnVoltar.Enabled := false;
+  btnPesquisar.Enabled := false;
+
+  imgNovo.Visible := false;
+  imgVoltar.Visible := false;
+  imgPesquisar.Visible := false;
+  imgCancelar.Visible := true;
+  imgGravar.Visible := true;
+  imgExcluir.Visible := false;
+  imgAlterar.Visible := false;
+
+  edtCodigo.Clear;
+  edtDescricao.Clear;
+  edtCodigo.SetFocus;
+
+
+end;
+
+procedure TfrmCadastro.btnCancelarClick(Sender: TObject);
+//Botão Cancelar
+begin
+  botoesAtivados;
+end;
+
+procedure TfrmCadastro.btnExcluirClick(Sender: TObject);
+//Botão Excluir
+begin
+  Tcontrols.BotaoExcluir;
+  botoesAtivados;
+
+end;
+
+procedure TfrmCadastro.btnGravarClick(Sender: TObject);
+// Botão Gravar
+begin
+  Tcontrols.BotaoGravar(edtCodigo.text, edtDescricao.text);
+  botoesAtivados;
+
+end;
+
+procedure TfrmCadastro.btnNovoClick(Sender: TObject);
+// Botão Novo
+begin
+
+  Tcontrols.SetGravarOuAlterar(false);
+  edtDescricao.Enabled := true;
+  edtCodigo.Enabled := true;
+
+  btnCancelar.Enabled := true;
+  btnGravar.Enabled := true;
+  btnVoltar.Enabled := false;
+  btnPesquisar.Enabled := false;
+  btnNovo.Enabled := false;
+  btnAlterar.Enabled := false;
+  btnExcluir.Enabled := false;
+
+  imgNovo.Visible := false;
+  imgVoltar.Visible := false;
+  imgPesquisar.Visible := false;
+  imgCancelar.Visible := true;
+  imgGravar.Visible := true;
+  imgExcluir.Visible := false;
+  imgAlterar.Visible := false;
+
+  edtCodigo.SetFocus;
+
+end;
+
+procedure TfrmCadastro.btnPesquisarClick(Sender: TObject);
+//Botão Pesquisar
+begin
+    Tcontrols.BotaoPesquisar1;
+  if Tcontrols.GetVoltarOuVisualizar() = true then
+  begin
+    btnCancelar.Enabled := true;
+    btnAlterar.Enabled := true;
+    btnExcluir.Enabled := true;
+    btnNovo.Enabled := false;
+    btnPesquisar.Enabled := false;
+    btnVoltar.Enabled := false;
+    btnGravar.Enabled := false;
+
+    imgNovo.Visible := false;
+    imgVoltar.Visible := false;
+    imgPesquisar.Visible := true;
+    imgCancelar.Visible := true;
+    imgGravar.Visible := false;
+    imgExcluir.Visible := true;
+    imgAlterar.Visible := true;
+
+    edtDescricao.Enabled := false;
+    edtCodigo.Enabled := false;
+  end
+  else
+  begin
+    botoesAtivados;
+  end;
+end;
+
+procedure TfrmCadastro.btnVoltarClick(Sender: TObject);
+// Botão Voltar
+begin
+  Tcontrols.BotaoVoltar1;
+end;
+
+procedure TfrmCadastro.FormShow(Sender: TObject);
+// Abertura do Formulário
+begin
+  botoesAtivados;
+end;
+
+end.

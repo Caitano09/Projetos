@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2019/09/04 14:52:11.000.766,=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>2019/09/04 15:52:09.000.607,C:\Users\01\Documents\Embarcadero\Studio\Projects\Project3.dproj=C:\Users\01\Documents\Embarcadero\Studio\Projects\Project3.dproj</Transaction>
+    <Transaction>2019/09/05 10:42:21.000.948,=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit5.pas</Transaction>
+    <Transaction>2019/09/05 10:45:43.000.244,C:\Users\01\Documents\Embarcadero\Studio\Projects\uPesquisa.dfm=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit5.dfm</Transaction>
+    <Transaction>2019/09/05 10:45:43.000.185,C:\Users\01\Documents\Embarcadero\Studio\Projects\uPesquisa.pas=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit5.pas</Transaction>
+    <Transaction>2019/09/05 11:02:33.000.769,C:\Users\01\Documents\Embarcadero\Studio\Projects\uCadastro.pas=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>2019/09/05 11:02:33.000.769,C:\Users\01\Documents\Embarcadero\Studio\Projects\uCadastro.dfm=C:\Users\01\Documents\Embarcadero\Studio\Projects\Unit3.dfm</Transaction>
+    <Transaction>2019/09/07 16:03:01.000.413,=C:\Users\Daniel\Desktop\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>2019/09/09 09:13:07.000.938,C:\Users\01\Documents\Desafio\Unit3.pas=C:\Users\01\Documents\Desafio\uRelatorio.pas</Transaction>
+    <Transaction>2019/09/09 09:13:07.000.938,C:\Users\01\Documents\Desafio\Unit3.dfm=C:\Users\01\Documents\Desafio\uRelatorio.dfm</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="uCadastro.pas"/>
+    <File Path="uCadastro.dfm"/>
+    <File Path="uPesquisa.pas"/>
+    <File Path="uPesquisa.dfm"/>
+    <File Path="uRelatorio.pas"/>
+    <File Path="uRelatorio.dfm"/>
+  </ProjectSortOrder>
+</BorlandProject>
