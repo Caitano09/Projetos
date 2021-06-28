@@ -1,0 +1,59 @@
+object frmMsn_Login: TfrmMsn_Login
+  Left = 0
+  Top = 0
+  AutoSize = True
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  ClientHeight = 231
+  ClientWidth = 555
+  Color = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  PrintScale = poNone
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 192
+    Top = 77
+    Width = 347
+    Height = 69
+    Caption = 'Aten'#231#227'o !!!'#13#10#13#10'Usu'#225'rio e/ou senha n'#227'o confere(m).'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -19
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 555
+    Height = 23
+    Align = alTop
+    Color = 15315289
+    ParentBackground = False
+    TabOrder = 0
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 208
+    Width = 555
+    Height = 23
+    Align = alBottom
+    Color = 15315289
+    ParentBackground = False
+    TabOrder = 1
+  end
+end
